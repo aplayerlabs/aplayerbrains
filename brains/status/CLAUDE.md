@@ -54,9 +54,12 @@ Read project state and report it in plain English.
    - Done. No further analysis needed.
 3. **If SESH.md exists:**
    - Read SESH.md fully.
+   - **Structural validation:** On reading SESH.md, verify: (1) all 8 section headers exist (Problem, Direction, Infrastructure, Requirements, Design, Build, Testing, Deployment), (2) the progress block has a parseable Status line, (3) the Agent field matches a known brain name. If validation fails, report: "SESH.md appears to have issues — [specific problem]. I can attempt recovery from git, or you can check the file manually."
    - Read STATUS.md if it exists.
+   - **Conflict detection:** After reading both SESH.md and STATUS.md, compare their claimed states. If STATUS.md claims a more advanced state than SESH.md supports (e.g., STATUS.md says "Ready to ship" but SESH.md has Status: BLOCKED), flag: "STATUS.md and SESH.md disagree. SESH.md is the source of truth. STATUS.md says [X] but SESH.md says [Y]. Following SESH.md."
    - Analyze populated sections (see "Reading the Pipeline" below).
    - Check the Status signal.
+   - **isDone dual-check:** When Status is DONE, verify the isDone condition: Status must be DONE AND Next Up must be empty or "None." If Next Up still has items, report: "Status says DONE but there are tasks remaining in Next Up. This brain's work may not be complete. Recommend re-entering /[brain] to finish."
    - Generate the status report.
 
 ## Re-entry Protocol

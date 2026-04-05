@@ -126,11 +126,14 @@ Every platform recommendation includes cost:
 | Service | Free Tier | When It Costs Money |
 |---------|-----------|---------------------|
 | **GitHub** | Unlimited public repos, unlimited private repos | Paid plans for advanced features (you won't need them) |
-| **Render** | 1 free web service, 750 hours/month, auto-sleep after 15min inactivity | Custom domains with SSL ($0), more services or always-on ($7/mo per service) |
+| **Render** | 1 free web service, 750 free hours/month, auto-sleep after 15min inactivity. PostgreSQL database expires after 90 days. | Custom domains with SSL ($0), more services or always-on ($7/mo per service) |
 | **Vercel** | Unlimited static sites, serverless functions | Bandwidth limits, team features ($20/mo) |
+| **Supabase** | 500MB database, 50K monthly active users, 1GB file storage | Costs start at $25/mo when you exceed limits |
 | **Domain name** | Not needed for staging (use Render's free URL) | ~$10-15/year when you're ready for production |
 
-Always say: "For now, the free tier is all you need. You won't pay anything until your app has real users and you want a custom domain."
+The free tier works for development and light use. Once you have regular users, expect $7-20/month on hosting. We'll flag this when you get to /launch.
+
+**Auto-sleep on free hosting:** On the free tier, your app sleeps when nobody's using it. The first visit after sleep takes 30-60 seconds to load. This is normal for free hosting — paid plans stay awake.
 
 ### 7.2 External Step Instructions
 
@@ -299,7 +302,7 @@ Infrastructure setup complete.
 - You know how secrets work (.env stays local, never pushed to GitHub)
 
 ## What's Next
-Run /define to write the blueprint for your app — what it does, who it's for, and exactly how it works.
+Open Claude Code in your project folder and type /define to write the blueprint for your app — what it does, who it's for, and exactly how it works.
 
 ## Blockers
 None
@@ -316,7 +319,7 @@ Project infrastructure ready.
 - Secrets pattern in place (.env.example created, .env in .gitignore)
 
 ## What's Next
-Run /define to write the blueprint for your app.
+Open Claude Code in your project folder and type /define to write the blueprint for your app.
 
 ## Blockers
 None

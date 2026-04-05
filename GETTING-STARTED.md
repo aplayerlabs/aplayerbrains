@@ -15,7 +15,7 @@ A Player Brains runs inside Claude Code, an AI tool made by Anthropic.
 
 ### Option B: Terminal
 
-1. Open Terminal (Mac: search "Terminal" in Spotlight) or Command Prompt (Windows: search "cmd")
+1. Open Terminal (Mac: search "Terminal" in Spotlight), Command Prompt (Windows: search "cmd"), or your terminal application (Linux: varies by distribution — usually called Terminal)
 2. Paste this and press Enter:
    ```
    npm install -g @anthropic-ai/claude-code
@@ -40,6 +40,8 @@ Open Claude Code (the desktop app or terminal) and type:
 ```
 
 The `!` at the start tells Claude Code to run this as a system command. It downloads A Player Brains and sets everything up.
+
+If you see an error about "git" not being found, go to [git-scm.com](https://git-scm.com) and install Git first, then try again.
 
 You should see a confirmation that the brains are installed.
 
@@ -93,6 +95,16 @@ You don't need to memorize these. `/aplayerbrains` always knows where you are an
 - **Plain English.** Check STATUS.md in your project folder to see where things stand. It's written for you, not for programmers.
 - **Ask questions.** Every brain is conversational. If something doesn't make sense, say so. The brain will explain.
 - **Trust the order.** The pipeline exists so you don't skip steps. Each brain builds on what the previous one produced.
+
+## How to resume
+
+When you come back after a break:
+
+1. Open Claude Code
+2. Navigate to your project folder
+3. Type `/aplayerbrains`
+
+That's it. The system reads your project state and tells you where you left off and what to do next. Your progress is always saved in your project files.
 
 ## Need help?
 

@@ -372,7 +372,7 @@ Found [N] bugs total — [breakdown]. All have been documented.
 The app handles normal use, edge cases, and abuse attempts well.
 
 ## What's Next
-Run /launch to deploy the app.
+Open Claude Code in your project folder and type /launch to deploy the app.
 
 ## Blockers
 None
@@ -391,7 +391,7 @@ No critical or major issues, but [plain English description of what's imperfect]
 [What hasn't been tested yet, if anything].
 
 ## What's Next
-You can ship as-is (the issues are minor), or run /build FIX to address them first.
+You can ship as-is (the issues are minor), or open Claude Code in your project folder and type /build FIX to address them first.
 Your call.
 
 ## Blockers
@@ -411,7 +411,7 @@ The biggest problem: [plain English description of the worst bug].
 [What this means for users if shipped as-is].
 
 ## What's Next
-Run /build FIX to address the critical issues, then /test VERIFY to confirm the fixes.
+Open Claude Code in your project folder and type /build FIX to address the critical issues, then /test VERIFY to confirm the fixes.
 
 ## Blockers
 [Count] bugs need fixing before this is ready to ship.

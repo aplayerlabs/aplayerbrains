@@ -76,17 +76,25 @@ Package, version, deploy. Get the app live on the internet.
 
 | # | Check | PASS | WARN | FAIL |
 |---|-------|------|------|------|
-| 1 | `deploy.json` exists and is valid | Present, parseable, targets defined | Present but missing optional fields | Missing or unparseable |
-| 2 | Hosting platform connected | API responds, credentials work | API slow but responds | API unreachable, auth failed |
+| 1 | `deploy.json` exists and is valid | Present, parseable, targets defined | Present but missing optional fields (empty URL fields are expected on first deploy — no prior entries in shipped/) | Missing or unparseable |
+| 2 | Hosting platform connected | API responds, credentials work | API slow but responds | See below for failure details |
 | 3 | No critical/high bugs in `bugs/open.md` | No critical or high bugs | Medium bugs exist | Critical or high bugs exist |
 | 4 | /test has run (`## Testing` in SESH.md populated) | Populated with ship readiness | Populated but readiness is YELLOW | Not populated (never tested) |
 | 5 | Ship readiness is GREEN or YELLOW | GREEN | YELLOW | RED |
 | 6 | All code committed, no uncommitted changes | Clean working tree | Untracked files only | Uncommitted changes to tracked files |
 | 7 | Version number set | Version bumped since last deploy | First deploy (no prior version) | Version conflicts with existing release |
 | 8 | Business owner confirmation | — | — | — (checked during SHIP, not PREFLIGHT) |
-| 9 | Environment variables configured | `.env` exists with all required vars, OR hosting platform env vars verified | `.env.example` exists but `.env` missing (may be set on platform) | No `.env.example` — can't verify what's needed |
+| 9 | Environment variables configured | Business owner confirms env vars are set on hosting platform | `.env.example` exists, business owner hasn't confirmed remote vars | No `.env.example` — can't determine what's needed |
 | 10 | Build artifacts exist | `src/` populated, `package.json` valid, app builds without errors | Build succeeds with warnings | Build fails |
 | 11 | Git remote reachable | Can push to configured remote | Remote responds slowly | Remote unreachable or auth failed |
+| 12 | Target branch has latest code | Current work is on the deploy target branch, or target is up to date | Target branch is behind current branch by N commits | Target branch has diverged or is unreachable |
+
+**PREFLIGHT item 2 — failure paths:**
+- **API unreachable** → "Can't reach [platform]. Check your internet connection."
+- **Auth failed (401/403)** → "Your [platform] API key has expired or been revoked. Go to [exact URL — Render: dashboard.render.com/u/settings → API Keys] to generate a new one, then update ~/.apb/config.yaml with the new key."
+
+**PREFLIGHT item 12 — target branch behind:**
+If the target branch is behind, WARN: "The [branch] branch is [N] commits behind your current work. You may be deploying an older version. Did you mean to deploy from [current branch] instead?"
 
 **Permission:** Read SESH.md, read STATUS.md, read `deploy.json`, read `~/.apb/config.yaml`, read `bugs/open.md`, read git status. No writes during PREFLIGHT except to STATUS.md.
 
@@ -102,11 +110,12 @@ Package, version, deploy. Get the app live on the internet.
 5. Commit version bump and release notes
 6. Request business owner confirmation: "Type 'ship it' to deploy to [target]"
 7. Push to hosting branch
-8. Wait for deploy to complete
-9. Verify: check URL responds with 200
-10. Report success or failure
-11. Log deployment in `shipped/{version}/deploy-log.md`
-12. Update SESH.md and STATUS.md
+8. **First deploy only — env var walkthrough:** "Your app needs these environment variables: [list from .env.example]. You need to set them on Render. Go to dashboard.render.com → your service → Environment → add each variable. Have you done this? (yes/no)." Wait for confirmation before proceeding.
+9. Wait for deploy to complete
+10. Verify: check URL responds with 200
+11. Report success or failure
+12. Log deployment in `shipped/{version}/deploy-log.md`
+13. Update SESH.md and STATUS.md
 
 **Permission:** Read/write SESH.md, read/write STATUS.md, read/write CHANGELOG.md, read/write `shipped/`, read `deploy.json`, read `~/.apb/config.yaml`, git commit, git push.
 
@@ -201,13 +210,16 @@ For first deployments, default to `v1.0.0`. Suggest the next version based on sc
 
 ### Rollback
 
+During SHIP, after a successful deploy, create a git tag on the deployed commit: `git tag v{X.Y.Z} && git push origin v{X.Y.Z}`
+
 If something goes wrong after deployment:
 
 1. The deploy log at `shipped/{version}/deploy-log.md` contains the rollback command
-2. Rollback is a git operation: push the previous version's branch/tag
-3. The exact command is: `git push origin HEAD~1:main` (or the equivalent for the configured branch)
-4. After rollback, verify the previous version is live (same URL check as deploy)
-5. Update STATUS.md: "Rolled back from v{X.Y.Z} to v{A.B.C}. Reason: [plain English]"
+2. Rollback command: `git push origin v{PREVIOUS}:main --force-with-lease` (replacing `main` with the configured deploy branch)
+3. After rollback, verify the previous version is live (same URL check as deploy)
+4. Update STATUS.md: "Rolled back from v{X.Y.Z} to v{A.B.C}. Reason: [plain English]"
+
+**First-deploy edge case:** If this is the first deploy (no prior version), there is nothing to roll back to. Rollback means taking the app offline. Go to your Render dashboard → [service] → Settings → Suspend Service.
 
 /launch does not have an automated rollback mode. Rollback is an intentional, manual action that requires the business owner to confirm.
 
@@ -232,18 +244,30 @@ If something goes wrong after deployment:
 
 ### URL Capture
 
-After first deployment, if deploy.json URLs were empty (because the hosting platform assigns URLs dynamically), update deploy.json with the actual deployed URL so downstream sessions and future deploys have the correct target.
+After first deployment, if deploy.json URLs were empty (because the hosting platform assigns URLs dynamically):
+
+1. Query the Render API for the service URL, or ask the business owner: "What URL did Render assign? Check your Render dashboard → your service → the URL shown at the top."
+2. Update `deploy.json` with the actual URL
+3. Commit: "Update deploy.json with live URL"
+
+This ensures downstream sessions and future deploys have the correct target.
 
 ### Deployment Verification
 
 After pushing:
-1. Wait for deploy to propagate (poll URL with reasonable timeout)
-2. Check URL responds with HTTP 200
-3. If version endpoint exists in `deploy.json`, verify it returns the correct version
-4. Report result:
+1. Poll the URL every 10 seconds, maximum 120 seconds total
+2. If platform is Render and tier is free: display "Render free tier is waking up your app. This can take up to 60 seconds..."
+3. Distinguish HTTP response codes:
+   - **502/503** — "Still booting, retrying..." (continue polling)
+   - **500** — "App crashed — check logs on your hosting dashboard"
+   - **404** — "Wrong URL or routing misconfigured"
+   - **Connection refused** — "Not deployed yet, waiting..." (continue polling)
+   - **200** — success, proceed to verification
+4. If version endpoint exists in `deploy.json`, verify it returns the correct version
+5. Report result:
    - Success: "v[X.Y.Z] is live at [URL]"
-   - Failure: "Deploy may have failed — [URL] returned [status/error]. Check your hosting dashboard."
-   - Timeout: "Deploy hasn't completed yet. Check your hosting dashboard in a few minutes."
+   - Failure: "Deploy failed — [URL] returned [status code]. [Specific guidance per code above]. Check your hosting dashboard."
+   - Timeout (120s exceeded): "Deploy hasn't completed after 2 minutes. Check your hosting dashboard."
 
 ### Deploy Log
 
@@ -256,7 +280,7 @@ Each deployment is logged in `shipped/{version}/deploy-log.md`:
 **Commit:** [short SHA]
 **Status:** Verified (200 at [URL]) / Unverified / Failed
 **Previous version:** v{A.B.C}
-**Rollback:** Push the `rollback/v{A.B.C}` tag, or run `/launch` with `DEPLOY v{A.B.C}`
+**Rollback:** `git push origin v{A.B.C}:main --force-with-lease` (or first deploy: suspend service via hosting dashboard)
 ```
 
 Rollback command always included.
@@ -353,11 +377,11 @@ Here's what's in this release:
 - [Key feature/fix in plain English]
 
 ## If Something Goes Wrong
-[Rollback instruction in plain English — e.g., "Run /launch and ask to redeploy the previous version, or contact your hosting dashboard at [URL]."]
+[Rollback instruction in plain English — e.g., "Open Claude Code in your project folder and type /launch and ask to redeploy the previous version, or contact your hosting dashboard at [URL]."]
 
 ## What's Next
 Your app is live. Share the URL with your users.
-If you want to make changes later, run /aplayerbrains to start a new round of improvements.
+If you want to make changes later, open Claude Code in your project folder and type /aplayerbrains to start a new round of improvements.
 ```
 
 **After failed deployment:**
@@ -370,7 +394,7 @@ Tried to deploy v{X.Y.Z} but something went wrong.
 [Plain English description of what happened — URL didn't respond, push failed, etc.]
 
 ## What's Next
-[What to try — check hosting dashboard, verify credentials, re-run /launch]
+[What to try — check hosting dashboard, verify credentials, open Claude Code in your project folder and type /launch to re-run]
 
 ## Blockers
 Deployment didn't complete. [Specific issue in plain English.]
@@ -387,8 +411,8 @@ Ran the pre-deployment checklist.
 [If failures: plain English description of what needs fixing]
 
 ## What's Next
-[If all pass: "Run /launch to deploy."]
-[If failures: "Fix [issue], then run /launch again."]
+[If all pass: "Open Claude Code in your project folder and type /launch to deploy."]
+[If failures: "Fix [issue], then open Claude Code in your project folder and type /launch again."]
 
 ## Blockers
 [If failures: description. If none: "None"]

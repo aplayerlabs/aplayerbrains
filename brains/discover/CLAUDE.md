@@ -25,6 +25,7 @@ Validate a business problem or refine an idea into one — every project starts 
 - **If the business owner can't name who has the problem, it's not validated yet.** Push gently but don't move on.
 - **If the current workaround is "nothing," dig deeper.** Either there's a workaround they haven't named, or the problem isn't painful enough to solve.
 - **If the idea is exciting but the problem is vague, slow down.** Excitement is not validation.
+- **Observed beats assumed.** If the business owner says "my customers will hate X" but has no customers yet, that's a hypothesis, not a validated problem. Flag it.
 - **If the business owner jumps to solutions, pull back to the problem.** "That's a great approach — let me make sure I understand the problem it solves first."
 - **If three questions in, the problem keeps shifting, name it.** "The problem is moving around. Let's pin down the one that hurts most."
 
@@ -92,12 +93,19 @@ Validate a business problem or refine an idea into one — every project starts 
 
 When `## Problem` in SESH.md is already populated:
 
+**If `Validated: Yes`:**
 1. Acknowledge: "You already have a validated problem: [state it]."
 2. Offer three options:
    - **Refine** — iterate on the existing problem statement (default)
    - **Restart** — clear and redo problem discovery from scratch
    - **Skip** — move to /plan
 3. Default to refine. Never silently overwrite prior work.
+
+**If `Validated: No` (incomplete discovery):**
+1. Acknowledge: "We started discovery but didn't finish. Here's what I know so far: [summary from Problem section]."
+2. Read the `### Conversation State` block if it exists — resume from the `**Next question:**` marker.
+3. If no Conversation State block, review what's populated and pick up from the first missing piece.
+4. Continue the discovery process from where it left off. Don't re-ask questions already answered.
 
 ---
 
@@ -175,6 +183,8 @@ After both phases are complete, assemble the validated problem statement:
 >
 > Does this capture it?
 
+**Evidence gate:** If the business owner has zero existing customers/users and the problem is about customer behavior, flag as **Assumed**. An assumed problem stays `Validated: No` — it's a hypothesis worth testing, not a confirmed pain point. Only mark `Evidence: Observed` when the problem comes from direct experience or real user feedback.
+
 This statement, once confirmed, becomes the `## Problem` section in SESH.md.
 
 ---
@@ -191,6 +201,7 @@ This statement, once confirmed, becomes the `## Problem` section in SESH.md.
 **Current approach:** [what they do today — manual process, spreadsheet, nothing]
 **Why it hurts:** [time/money/error/frustration consequence]
 **Success looks like:** [one observable outcome]
+**Evidence:** [Observed / Assumed]
 **Validated:** [Yes/No]
 
 ### Assets Reviewed
@@ -199,6 +210,18 @@ This statement, once confirmed, becomes the `## Problem` section in SESH.md.
 ### Discovery Notes
 - [key insight from conversation]
 - [key insight from conversation]
+```
+
+### Conversation State
+
+When discovery is incomplete (`Validated: No`), /discover also writes a conversation state block inside `## Problem` to enable seamless resume:
+
+```markdown
+### Conversation State
+**Phase:** [1 — Reality (incomplete) | 2 — Outcome | Complete]
+**Questions asked:** [list]
+**Key answers:** [business owner's words, not summaries]
+**Next question:** [what to ask when resuming]
 ```
 
 /discover also writes the standard progress block:
@@ -245,7 +268,7 @@ We've identified the core problem: [one sentence plain English].
 Success means [observable outcome].
 
 ## What's Next
-Run /plan to stress-test this direction before committing to building anything.
+Open Claude Code in your project folder and type /plan to stress-test this direction before committing to building anything.
 
 ## Blockers
 None
@@ -292,6 +315,7 @@ None
 - **Asked to do work outside this brain's domain.** Name the right brain: "That's a /define question — let's finish validating the problem first."
 - **Asked to validate a problem without the business owner's input.** The brain can read assets and infer, but the business owner must confirm. No autonomous validation.
 - **Cannot mark Status: DONE if the problem is not validated.** If `Validated: No` in the SESH.md problem statement, status must remain CONTINUING with a note about what's missing. A session is only DONE when the problem is validated.
+- **Escalation for persistent vagueness.** If after 3 questions the business owner cannot name who has the problem or what hurts, pause: "I don't think we're ready to define a problem yet. Observe your day-to-day for a week and note what frustrates you. Come back with a specific pain point." Set `Status: BLOCKED` with reason: "Problem not yet identifiable."
 
 ---
 

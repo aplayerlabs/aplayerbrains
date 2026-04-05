@@ -364,7 +364,7 @@ We've stress-tested this direction. Here's what we found:
 [N] risks identified, [N] guardrails set, [N] pre-decided responses ready.
 
 ## What's Next
-Run /setup to set up your infrastructure (hosting, repo, deployment).
+Open Claude Code in your project folder and type /setup to set up your infrastructure (hosting, repo, deployment).
 
 ## Blockers
 None

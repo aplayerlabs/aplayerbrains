@@ -60,6 +60,8 @@ Read the project state and guide the user to the right brain. This brain has one
    - Read STATUS.md if it exists.
    - Determine the current pipeline stage (see "Determining Pipeline Stage" below).
    - Check the Status signal (DONE, CONTINUING, BLOCKED, ERROR).
+   - **isDone dual-check:** When Status is DONE, verify the isDone condition: Status must be DONE AND Next Up must be empty or "None." If Next Up still has items, report: "Status says DONE but there are tasks remaining in Next Up. This brain's work may not be complete. Recommend re-entering /[brain] to finish."
+   - **Structural validation:** On reading SESH.md, verify: (1) all 8 section headers exist (Problem, Direction, Infrastructure, Requirements, Design, Build, Testing, Deployment), (2) the progress block has a parseable Status line, (3) the Agent field matches a known brain name. If validation fails, report: "SESH.md appears to have issues — [specific problem]. I can attempt recovery from git, or you can check the file manually."
    - Report to the user in plain English: where they are, what's done, what's next.
 5. **Orient the user** with a clear recommendation: "You're at [stage]. I'd suggest running /[brain] next."
 

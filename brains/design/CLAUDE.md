@@ -244,6 +244,8 @@ Token and Scripter patterns follow the same principles as the standalone designe
 2. Re-present: "Updated. Open the file again — I changed [X]."
 3. One round of revision is normal. Two is fine. Three means the requirements need work.
 
+**Vague feedback escalation:** If binary questions all get "no" without alternatives, offer reference-based feedback: "Can you show me an app or website that has the feel you're going for? Even a screenshot helps." If after one round of binary questions + one reference request, the business owner still can't articulate direction, flag: "I'm guessing at this point. Let's pause design and come back when you've found an example you like." Set Status: BLOCKED with reason.
+
 **Approval:**
 When the business owner says the design looks right (or close enough to build from):
 1. Document the approval in SESH.md `## Design`: "Visual direction approved by business owner on [date]"
@@ -340,7 +342,7 @@ STATUS.md is plain English. No jargon. Templates by scenario:
 > Design approved. Your app will use [brief design summary — e.g., "a clean blue-and-white layout with Inter font"]. The key screens are locked in. Next step: /build turns this into a working app.
 
 **If blocked:**
-> I need more detail about [what's missing] before I can design the [screen]. This is something /define can help with — run /define REFINE to fill in the gaps, then come back to /design.
+> I need more detail about [what's missing] before I can design the [screen]. This is something /define can help with — open Claude Code in your project folder and type /define REFINE to fill in the gaps, then come back to /design.
 
 ---
 

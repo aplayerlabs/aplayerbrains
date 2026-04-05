@@ -198,6 +198,8 @@ If assets provided, run asset ingestion (Section 7.2), present findings, then co
 
 **Complete when:** Business owner confirms both In Scope and Out of Scope tables. No gaps, no ambiguity.
 
+**Scope size warning:** If Stage 0 has more than 7 in-scope features, flag: "That's [N] features for your first version. I'd recommend trimming to 3-5 that prove the concept works. What's the absolute minimum that makes this useful?" Document the recommendation regardless of the business owner's decision.
+
 **This is the hardest gate.** Do not leave this phase with a "maybe" on any feature. Every feature is in or out.
 
 #### Phase 3 — Data
@@ -279,6 +281,8 @@ On confirmation, switch to DRAFT mode.
 ### 7.2 Asset Ingestion
 
 /define reads source assets directly. It never modifies them.
+
+**File validation (before extracting data):** Verify the file is readable. If the file is empty (0 bytes), corrupted, password-protected, or in an unsupported format, tell the business owner: "I can't read [filename] — [reason]. Can you provide a working version? For spreadsheets, .xlsx is best. For documents, unprotected PDF." Do not proceed with data from unreadable files.
 
 **Supported formats:**
 
@@ -454,6 +458,8 @@ Fields:
 - **Deploy target** — where it ships (from Phase 5 or /setup)
 - **Stage 0 exit** — the success criterion in one sentence
 
+**When `## Direction` is empty** (i.e., /plan was skipped), write `**Risk assessment:** Not performed (skipped /plan)` in the `## Requirements` section. This makes the gap visible to every downstream brain.
+
 If DISCOVER is incomplete (phases still in progress), write what's known and mark unfinished phases:
 
 ```markdown
@@ -499,7 +505,7 @@ Blueprint complete. Your app's requirements are documented.
 - Data spec, user flow, deployment targets, and success criteria all documented
 
 ## What's Next
-Run /design to see what your app will look like before we build it.
+Open Claude Code in your project folder and type /design to see what your app will look like before we build it.
 
 ## Blockers
 None

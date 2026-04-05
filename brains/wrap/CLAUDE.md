@@ -2,24 +2,24 @@
 
 ## Role
 
-Gracefully close a session, capture all state into SESH.md and STATUS.md, and generate a continuation prompt that lets the next session pick up exactly where this one stopped.
+Gracefully close a session, capture all state into SESH.md and STATUS.md, and present a Claude Code plan that clears context and resumes from SESH.md with a fresh start.
 
 ## Mindset, Heuristics & Protective Instincts
 
 **How this brain thinks:**
 - State preservation is the job. If something was in progress and it's not captured, the session was wasted.
 - Specificity over summary. "Working on auth" is useless. "Implementing token refresh in src/lib/auth.ts, line 47, needs error handling for expired tokens" is useful.
-- The continuation prompt is the deliverable. Everything else serves it.
+- The plan is the deliverable. Everything else serves it.
 
 **Judgment shortcuts:**
 - If no SESH.md exists, create one before wrapping — you can't resume what was never recorded.
 - If the current brain's section is empty, backfill it from what happened this session before setting status.
 - If the user says "wrap" mid-task, capture the partial state — don't try to finish the task first.
-- If there are blockers, promote them to the top of the continuation prompt so the next session sees them immediately.
-- If /test found bugs and the fix belongs in /build, point the continuation prompt at /build FIX.
+- If there are blockers, promote them to the top of the plan so the next session sees them immediately.
+- If /test found bugs and the fix belongs in /build, point the plan at /build FIX.
 
 **Keeping the business owner on track:**
-- Always tell them how to resume: paste the continuation prompt into a new session.
+- Always explain what's happening: "I'm saving a checkpoint so we can continue with a fresh start. Your progress is saved in your project files."
 - If the project is blocked, say what needs to happen before they come back.
 - Never wrap without updating both SESH.md and STATUS.md — the business owner reads STATUS.md.
 - If context is genuinely running out, skip pleasantries and get the state saved.
@@ -30,17 +30,17 @@ Gracefully close a session, capture all state into SESH.md and STATUS.md, and ge
 
 **What comes before:** Whatever brain is currently active.
 
-**What comes after:** Whatever brain the continuation prompt names (could be the same brain, or a different one).
+**What comes after:** Whatever brain the plan names (could be the same brain, or a different one).
 
 **What it expects in SESH.md:** The current brain's section, partially or fully populated. May also have upstream sections from previous brains.
 
-**What it leaves behind:** Updated SESH.md with `Status: CONTINUING`, updated STATUS.md, and a continuation prompt output to the conversation.
+**What it leaves behind:** Updated SESH.md with `Status: CONTINUING`, updated STATUS.md, and a plan presented for the user to accept (triggering context clear and fresh resume).
 
 ## Operating Modes
 
 ### WRAP (default)
 
-Full session close. Inventory what got done, update SESH.md and STATUS.md, generate continuation prompt.
+Full session close. Inventory what got done, update SESH.md and STATUS.md, present continuation plan.
 
 **Trigger:** User says "wrap", "wrap up", "pause", "stop here", or context window is filling up.
 
@@ -59,7 +59,7 @@ Triggered by the brain itself (or the system) when context window is running low
 1. **Read SESH.md.** Understand the current state — which brain is active, what mode, what's been done.
 2. **Read STATUS.md.** Know what the business owner has been told so far.
 3. **Identify the active brain** from the `**Agent:**` field in SESH.md. If missing, infer it from which section was last written.
-4. **Read the active brain's CLAUDE.md** at `brains/{brain-name}/CLAUDE.md`. Extract its operating modes for the continuation prompt.
+4. **Read the active brain's CLAUDE.md** at `brains/{brain-name}/CLAUDE.md`. Extract its operating modes for the plan.
 5. **Inventory the session:**
    - What was completed (tasks, decisions, files created/changed)
    - What's in progress (current task, where exactly work stopped)
@@ -156,7 +156,7 @@ Update in plain English. The business owner reads this.
 
 ### Step 4: Determine Continuation Target
 
-The continuation prompt might point to a different brain than the one that just ran:
+The plan might point to a different brain than the one that just ran:
 
 | Situation | Point continuation at |
 |-----------|---------------------|
@@ -167,41 +167,34 @@ The continuation prompt might point to a different brain than the one that just 
 | Business owner needs to make a decision | Same brain, note the decision needed |
 | External blocker (API key, DNS, etc.) | Same brain, note what must be resolved first |
 
-### Step 5: Generate Continuation Prompt
+### Step 5: Present Continuation Plan
 
-Output this block for the user to copy into their next session:
+Instead of outputting a copy-paste prompt, formulate the continuation as a **Claude Code plan**. The plan clears context (via `showClearContextOnPlanAccept`) and resumes fresh from SESH.md.
+
+**Plan content:**
 
 ```
----
-## CONTINUATION PROMPT (copy everything below this line)
----
-
-Read @brains/{brain-name}/CLAUDE.md, then work on @{project-path}/
-
-Read SESH.md first. Status: CONTINUING.
-
-**Mode:** {TARGET_MODE}
-
-## Where We Left Off
-{Specific context from this session — be precise}
-
-## Next Up
-{What to do next — be specific, actionable}
-
-## Blockers
-{None, or plain English what's blocking and what's needed}
-
----
-**Other modes available:**
-{List other modes for the target brain — one line each, from its CLAUDE.md}
+Read SESH.md in {project-path}. Enter /{brain-name} {TARGET_MODE}. Pick up from {where we left off}. Next task: {specific next step}.
 ```
+
+**How to present it:**
+
+1. Tell the business owner: "I've saved our progress. Here's the plan to continue with a fresh start."
+2. Present the plan. The plan must include:
+   - The path to SESH.md
+   - The target brain and mode
+   - Where work stopped (specific enough to resume immediately)
+   - The immediate next task
+   - Any blockers (at the top if they exist)
+3. The business owner accepts the plan. Context clears. Execution resumes fresh with SESH.md as the source of truth.
 
 **Rules:**
-- The `@brains/` path must reference the brain's CLAUDE.md, not the project.
-- The `@{project-path}/` must be the project directory.
+- The plan must reference the brain by its slash-command name (e.g., `/build`, `/test`).
 - Mode must be a valid mode from the target brain's CLAUDE.md.
-- "Where We Left Off" must be specific enough that a fresh session can start working immediately without re-reading the entire codebase.
-- "Other modes available" comes from reading the target brain's Operating Modes section.
+- The "where we left off" must be specific enough that a fresh session can start working immediately without re-reading the entire codebase.
+- SESH.md is the source of truth across all sessions — the plan just points at it.
+
+**Fallback — across-session resume:** If the business owner closes Claude Code entirely and returns later, SESH.md has their state. They type /aplayerbrains and resume from there. The plan mechanism handles within-session context refresh. SESH.md handles across-session resume.
 
 ## SESH.md Contract
 
@@ -237,7 +230,7 @@ Read SESH.md first. Status: CONTINUING.
 {Cumulative plain English summary}
 
 ## What's Next
-Resume with /[brain]. {One sentence on what happens next.}
+Open Claude Code in your project folder and type /[brain]. {One sentence on what happens next.}
 
 ## Blockers
 {None, or plain English}
@@ -264,7 +257,7 @@ This brain IS the auto-wrap mechanism. Other brains invoke /wrap AUTO when conte
 1. Skip the user prompt — go straight to inventory.
 2. Open with: "Context is getting full. Saving our progress now."
 3. Run the full wrap process.
-4. End with the continuation prompt.
+4. Present the continuation plan for the business owner to accept.
 
 ## Self-Modification Rules
 

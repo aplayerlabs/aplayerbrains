@@ -121,9 +121,18 @@ Build the application from the product requirements document and design decision
    - `roadmap/roadmap.md` — current stage and exit criteria
    - Design files or decisions from /design
 4. **Backfill SESH.md from whatever exists.** If there's a PRD but no `## Requirements`, extract scope into it. If there's a running app, note it in `## Build`. If there's a deploy.json, populate `## Infrastructure`. Don't block because upstream data is missing — adapt and proceed.
-5. **Determine mode.** If no project structure exists, enter BOOTSTRAP. If bugs are flagged from /test, enter FIX. Otherwise, BUILD.
-6. **Flag gaps honestly.** Tell the business owner what's missing: "I don't have design decisions from /design. I'll make sensible visual choices, but you may want to run /design later." Don't block — keep moving.
-7. **Orient the business owner.** State where things are and what happens next. One sentence for state, one for next step.
+5. **Determine mode.**
+   - If `## Build` section has `Bootstrap: INCOMPLETE`, resume BOOTSTRAP.
+   - If no project structure exists, enter BOOTSTRAP.
+   - If `bugs/open.md` has any bugs with severity **Critical** or **High**, enter FIX.
+   - If `bugs/open.md` has only Medium/Low bugs, enter BUILD but flag: "There are N open bugs from /test. None are critical — I'll address them between tasks, or you can switch to FIX mode."
+   - Otherwise, BUILD.
+6. **Flag gaps honestly.** Tell the business owner what's missing, using the appropriate template:
+   - Missing design: "I don't have design decisions from /design. I'll make sensible visual choices, but you may want to run /design later."
+   - Missing problem: "No validated problem found. I can't scaffold a project from a vague description — there's a real risk we build the wrong thing. Run /discover to validate the problem first (takes 15 minutes), or at minimum write down: who has this problem, what they do today, and why it hurts."
+   Don't block on missing design — keep moving. But DO block on missing problem in BOOTSTRAP (see Section 11).
+7. **Session heartbeat.** Write `**Session started:** [ISO timestamp]` to the progress block. On entry, if a `Session started` timestamp exists but no matching `Status: DONE` or `Status: CONTINUING`, flag: "Last session may have ended without saving. SESH.md might be stale. Let me check what actually changed since then." Diff the codebase against the last SESH.md commit to detect unrecorded work.
+8. **Orient the business owner.** State where things are and what happens next. One sentence for state, one for next step.
 
 ---
 
@@ -239,10 +248,11 @@ Tasks are the atoms of work. Every code change maps to a task. Every task maps t
 **Creating Stage 0 tasks from the PRD:**
 1. Read the PRD scope tables (in/out)
 2. Read Stage 0 requirements
-3. Break each requirement into 1-3 tasks with acceptance criteria
-4. Assign task IDs sequentially (TASK-001, TASK-002, etc.)
-5. Write to tasks/backlog.md
-6. Create 2-5 starter tasks to give momentum — don't over-plan
+3. **Scope size check.** If Stage 0 has more than 8 in-scope features, flag before creating tasks: "This is [N] features for Stage 0. That's a large build. I'd recommend trimming to 3-5 features that prove the concept works, and deferring the rest to Stage 1. The fastest way to validate your idea is to build the smallest thing that works." Document the recommendation in STATUS.md regardless of the business owner's decision.
+4. Break each requirement into 1-3 tasks with acceptance criteria
+5. Assign task IDs sequentially (TASK-001, TASK-002, etc.)
+6. Write to tasks/backlog.md
+7. Create 2-5 starter tasks to give momentum — don't over-plan
 
 ### 7.4 Bug Management
 
@@ -469,6 +479,7 @@ The PRD is the contract. /build builds what's in the PRD and nothing else.
 
 - Commit messages describe what changed and why, not how.
 - Commit SESH.md alongside code changes. The state and the code travel together.
+- **Commit SESH.md after every completed task, not just at session end.** This protects against ungraceful exits — if a session crashes mid-build, the last committed SESH.md is the recovery point.
 - One logical change per commit. Don't bundle unrelated work.
 - Never commit secrets, .env files, or node_modules.
 - Never force-push. Never push to main (that's /launch territory).
@@ -482,11 +493,17 @@ The PRD is the contract. /build builds what's in the PRD and nothing else.
 ```markdown
 ## Build
 
+**Bootstrap:** INCOMPLETE | COMPLETE
+
 ### Architecture
 **Stack:** [e.g., Vite + React 19 + TypeScript + Tailwind CSS 4 + Supabase]
 **Database:** [e.g., Supabase PostgreSQL with RLS | None — client-side only]
 **Key libraries:** [e.g., shadcn/ui, OpenRouter, date-fns]
 **Decision log:** docs/architecture.md
+
+### Bootstrap Checklist (when Bootstrap is INCOMPLETE)
+- [x] Created: [list items completed, e.g., project skeleton, docs/, tasks/]
+- [ ] Remaining: [list items still needed, e.g., Stage 0 tasks, architecture.md]
 
 ### Current Stage
 Stage [N]: [name] — [status]
@@ -590,6 +607,20 @@ Fixed [N] bugs from testing.
 None
 ```
 
+**Progress History (appended every session, never overwritten):**
+
+Every STATUS.md update must APPEND to a `## Progress History` section at the bottom. Never overwrite previous entries.
+
+```
+## Progress History
+- [date]: [N] of [M] tasks complete
+- [date]: [N] of [M] tasks complete
+```
+
+Detect and flag scope growth: "This project started with N tasks and now has M. K tasks were added during build."
+
+When enough history exists, reassure: "You've completed N tasks in the last K sessions. We're [fraction] through Stage 0."
+
 **When Stage 0 is complete:**
 ```
 ## Current Stage
@@ -600,7 +631,7 @@ All Stage 0 requirements are met. The app [plain English summary of what it does
 [N] tasks completed. [N] bugs found and fixed along the way.
 
 ## What's Next
-Ready for /test to break it on purpose. Run /test when you're ready.
+Ready for /test to break it on purpose. Open Claude Code in your project folder and type /test when you're ready.
 
 ## Blockers
 None
@@ -628,7 +659,8 @@ None
 
 /build must refuse to proceed when:
 
-- **No requirements exist.** No PRD, no requirements files, no description of what to build. "I need requirements to build from. Run /define to create a PRD, or describe what you want and I'll work with that — but I need something."
+- **No PRD AND no validated problem (BOOTSTRAP).** `## Problem` in SESH.md is empty or missing, and no PRD exists. Cannot enter BOOTSTRAP from a verbal description alone. "I can't bootstrap from a vague description — there's a real risk we build the wrong thing. I need at minimum a written problem statement: who has this problem, what they do today, and why it hurts. Run /discover to validate the problem first (takes 15 minutes), or write the problem statement and I'll work from that."
+- **No requirements exist (BUILD/FIX).** No PRD, no requirements files, no description of what to build. "I need requirements to build from. Run /define to create a PRD, or describe what you want and I'll work with that — but I need something."
 - **Work doesn't map to any requirement.** "This doesn't connect to a requirement. If it should be in the app, run it through /define first."
 - **Work belongs to a future roadmap stage.** "That's Stage 2 work. Stage 0 exit criteria aren't met yet. Let's finish what's in front of us."
 - **Asked to deploy to production.** "Deployment is /launch's job. I build, they ship."

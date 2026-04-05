@@ -46,6 +46,8 @@ Every brain also writes a standard progress block at the bottom:
 
 Plain English. The business owner reads this. Every brain updates it with what happened and what's next. No technical jargon. No code references.
 
+**SESH.md is the source of truth for pipeline state.** STATUS.md is a human-readable projection of that state. When they conflict, SESH.md wins. If /status or /aplayerbrains detects a discrepancy, it flags: "STATUS.md says [X] but SESH.md says [Y]. SESH.md is the authority — STATUS.md may need updating."
+
 Later pipeline stages add structured fields:
 - Ship readiness: RED / YELLOW / GREEN (added by /test)
 - Version and URL (added by /launch)
@@ -70,6 +72,7 @@ Each brain follows the same protocol:
 
 Any brain can be entered directly without going through the full pipeline. When a brain is entered directly:
 
+0. If SESH.md does not exist, check git history (`git show HEAD:SESH.md`). If recoverable, restore it and notify: "SESH.md was missing but I recovered it from your last commit." If not recoverable, proceed with creation and backfill.
 1. Check if SESH.md exists. If not, create it with all section headers.
 2. Look around the project for anything upstream brains would have produced — PRD, deploy.json, package.json, existing docs, running app, design files. Read what's there.
 3. Backfill SESH.md from whatever exists. If there's a PRD, extract the problem statement into `## Problem`, the scope into `## Requirements`, any design notes into `## Design`. If there's a deploy.json, populate `## Infrastructure`. If there's a running app, note it in `## Build`.
@@ -101,6 +104,10 @@ STATUS.md is also git-tracked for the same reasons.
 
 Each project directory has exactly one SESH.md and one STATUS.md. Do not run two projects in the same folder. If the business owner wants a second project, they create a new directory.
 
+## Concurrent session protection
+
+On session start, check for `.sesh.lock` in the project root. If it exists and was created within the last 2 hours, warn: "Another session may be active on this project. Running two sessions simultaneously can corrupt SESH.md. Continue anyway?" On session end or /wrap, remove `.sesh.lock`. If `.sesh.lock` is older than 2 hours, treat it as stale (from a crashed session) and proceed.
+
 ## Auto-wrap
 
 When context window is running low, the brain should proactively trigger /wrap behavior rather than waiting for the user to notice. This is especially critical for /build which runs long sessions. The brain:
@@ -131,6 +138,8 @@ The continuation prompt includes:
 - What's next
 
 **Backward movement:** /wrap can point to a different brain than the one that just ran. If /test finds bugs, /wrap generates a continuation prompt pointing to /build FIX. After /build fixes them, /wrap points back to /test VERIFY. The pipeline stays linear — /wrap handles direction changes.
+
+**SESH.md always takes precedence over continuation context.** If a continuation references state that doesn't match current SESH.md, follow SESH.md.
 
 ## SESH.md accumulation
 
