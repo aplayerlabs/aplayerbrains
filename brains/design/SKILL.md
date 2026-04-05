@@ -16,4 +16,4 @@ Read and follow `brains/design/CLAUDE.md`.
 
 Start by reading SESH.md. If missing, create it.
 
-[CLAUDE.md not yet written — this brain is part of Shipping Phase B]
+Read and follow the operating contract. Start by reading SESH.md in the project directory.
