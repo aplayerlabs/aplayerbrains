@@ -97,6 +97,8 @@ Every brain also writes the standard progress signaling block (Status, Completed
 
 *The 8 brains, plus the front door and 3 utilities. Written new. Existing APB brains are reference only.*
 
+*Every brain is pipeline-aware. It knows what comes before and after it. When entered directly without prior pipeline state, it reads the room — looks for PRDs, deploy configs, running apps, existing docs — backfills SESH.md from whatever exists, flags gaps honestly, and keeps moving. When re-entered on a project where it's already run, it offers to refine, restart, or skip. No brain blocks because upstream data is missing.*
+
 ---
 
 ### 3.0 — `/aplayerbrains`

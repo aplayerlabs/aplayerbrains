@@ -94,11 +94,27 @@ What the brain reads when it starts a session.
 
 ```markdown
 ## Session Start
-1. Check for SESH.md. If missing, create it.
-2. Read SESH.md — understand current state.
-3. Read STATUS.md — understand what the business owner has been told.
-4. Read any brain-specific files (PRD, tasks, bugs, etc.)
-5. Orient the user: "Here's where we are. Here's what I'll do next."
+1. Check for SESH.md. If missing, create it with all section headers.
+2. Look around the project for artifacts from upstream brains — PRD, deploy.json,
+   package.json, design files, running app. Read what's there.
+3. Backfill SESH.md from whatever exists. Extract problem statements, scope,
+   design notes, infra config — anything upstream brains would have written.
+4. Read STATUS.md — understand what the business owner has been told.
+5. Read any brain-specific files (PRD, tasks, bugs, etc.)
+6. Flag gaps honestly: what's missing from upstream, what you'd recommend.
+7. Orient the user: "Here's where we are. Here's what I'll do next."
+```
+
+The pattern is: **read the room, backfill from whatever exists, flag gaps, keep moving.** Never block because upstream data is missing.
+
+### 4a. Re-entry protocol
+What happens when this brain has already run on this project (its SESH.md section is populated):
+
+```markdown
+## Re-entry
+1. Acknowledge existing work: "You already have [X] from a previous session."
+2. Offer options: refine (iterate), restart (clear and redo), or skip (next brain).
+3. Default to refine. Never silently overwrite prior work.
 ```
 
 ### 5. Domain-specific sections
@@ -222,14 +238,28 @@ Every brain must handle being entered directly (not through the pipeline):
 
 Before shipping a brain:
 
+**Files:**
 - [ ] SKILL.md has valid frontmatter
-- [ ] CLAUDE.md has all 9 required sections
+- [ ] CLAUDE.md has all required sections (Role, Mindset, Modes, Session Start, Re-entry, domain sections, Boundaries, Refusal, Self-modification, Operating Principle)
 - [ ] USAGE.md exists with examples for each mode
 - [ ] SPEC_CHANGELOG.md has at least v1.0.0
 - [ ] SPEC_DECISIONS.md has at least one decision
+
+**Pipeline awareness:**
 - [ ] Brain reads SESH.md on start
+- [ ] Brain creates SESH.md with all section headers if missing
+- [ ] Brain backfills SESH.md from existing project artifacts (PRD, deploy.json, code, etc.)
 - [ ] Brain writes to its own SESH.md section (doesn't overwrite others)
 - [ ] Brain updates STATUS.md in plain English
-- [ ] Brain handles direct entry (no SESH.md, missing prior data)
+- [ ] Brain knows what brain comes before and after it in the pipeline
+- [ ] Brain flags missing upstream data honestly but doesn't block
+
+**Direct entry:**
+- [ ] Brain handles no SESH.md (creates it, backfills from project)
+- [ ] Brain handles missing prior stage data (flags gaps, adapts, proceeds)
+- [ ] Brain handles re-entry (section already populated — offers refine/restart/skip)
+
+**Guard rails:**
 - [ ] Brain has explicit refusal conditions
 - [ ] Brain has explicit boundaries (what it does NOT do)
+- [ ] Brain triggers auto-wrap when context is running low

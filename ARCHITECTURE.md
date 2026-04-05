@@ -70,12 +70,50 @@ Each brain follows the same protocol:
 
 Any brain can be entered directly without going through the full pipeline. When a brain is entered directly:
 
-1. It creates SESH.md if it doesn't exist
-2. It checks whether it has what it needs from prior stages
-3. If something is missing, it tells the user: "I don't have a validated problem yet. You might want to run /discover first. Or tell me about the problem now and I'll work with what I have."
-4. It does NOT block. It adapts.
+1. Check if SESH.md exists. If not, create it with all section headers.
+2. Look around the project for anything upstream brains would have produced — PRD, deploy.json, package.json, existing docs, running app, design files. Read what's there.
+3. Backfill SESH.md from whatever exists. If there's a PRD, extract the problem statement into `## Problem`, the scope into `## Requirements`, any design notes into `## Design`. If there's a deploy.json, populate `## Infrastructure`. If there's a running app, note it in `## Build`.
+4. Flag what's genuinely missing. Tell the user honestly: "I don't have a validated direction from /plan. That means we haven't stress-tested this idea yet. I'd recommend running /plan, but I can work with what we have."
+5. Do NOT block. Adapt and proceed.
 
-This means the pipeline is the recommended path, but not the only path. Someone who just wants to test an existing app can type /test directly. Someone who just wants a design mockup can type /design directly.
+The pattern is: **read the room, backfill SESH.md from whatever exists, flag the gaps, keep moving.**
+
+This means the pipeline is the recommended path, but not the only path. Someone who already has a PRD can type /build directly — the brain reads the PRD, backfills SESH.md, and starts building. Someone who just wants to test an existing app can type /test directly — the brain looks at the codebase and proceeds.
+
+## Re-entry to a completed brain
+
+When a brain is invoked on a project where it has already run (its SESH.md section is populated):
+
+1. Acknowledge the existing work: "You already have a validated problem: [X]."
+2. Offer three options: **refine** (iterate on what's there), **restart** (clear and redo), or **skip** (move to the next brain).
+3. Default to refine. Never silently overwrite prior work.
+
+## SESH.md is git-tracked
+
+SESH.md must be committed to git. This means:
+- If the business owner accidentally deletes it, `git checkout SESH.md` recovers it
+- The full history of pipeline decisions is in version control
+- /build commits SESH.md alongside code changes
+
+STATUS.md is also git-tracked for the same reasons.
+
+## One project per directory
+
+Each project directory has exactly one SESH.md and one STATUS.md. Do not run two projects in the same folder. If the business owner wants a second project, they create a new directory.
+
+## Auto-wrap
+
+When context window is running low, the brain should proactively trigger /wrap behavior rather than waiting for the user to notice. This is especially critical for /build which runs long sessions. The brain:
+
+1. Detects context is filling up
+2. Tells the user: "Context is getting full. Let me save our progress."
+3. Runs the /wrap protocol (update SESH.md, update STATUS.md, generate continuation prompt)
+
+This is a safety net. The user can still /wrap manually at any time.
+
+## Config is always fresh
+
+Brains always read `~/.apb/config.yaml` and `deploy.json` fresh at session start. Never cache config from a previous session. If the business owner re-runs /setup to change hosting platforms, every downstream brain picks up the change automatically.
 
 ## /wrap and re-entry
 
