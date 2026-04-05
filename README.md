@@ -2,11 +2,11 @@
 
 Turn a business problem into a working application — without writing code.
 
-A Player Brains is a skill pack for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that guides you from "I have a problem" to "my app is live" through a brain chain — a coordinated sequence of specialist AI brains where each brain's output feeds the next. Each brain handles one stage. You follow the track.
+A Player Brains is a skill pack for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) that guides you from "I have a problem" to "my app is live" through a brain chain — eight specialist AI brains, in order, each one handing off to the next.
 
 ## Who this is for
 
-Business owners who have identified a bottleneck and want software to solve it. You're comfortable with a computer. You've never written code. You don't need to.
+Business owners who have a problem they want software to solve — or an idea they want to test. You're comfortable with a computer. You've never written code. You don't need to.
 
 A Player Brains makes the decisions that normally require a developer — what framework, what database, what hosting, how to deploy. You make the product decisions. The brains handle the rest.
 
@@ -32,7 +32,7 @@ A Player Brains makes the decisions that normally require a developer — what f
 /launch           Deploy. Your app is live.
 ```
 
-At any point, type `/wrap` to pause and pick up later. Type `/status` to see where you are.
+At any point, type `/wrap` to pause and pick up later. Type `/status` to see where you are. After launch, re-enter the chain at any brain to add features, fix bugs, or ship updates.
 
 ## Install
 
@@ -52,11 +52,11 @@ Every brain reads and writes two files in your project:
 
 You read STATUS.md. The brains read SESH.md. The brain chain stays on track.
 
+When a session ends, `/wrap` saves your progress and presents a plan to continue. Accept it and you're back to work with a fresh start — no copy-pasting, no lost context.
+
 ## YouTube
 
 Each brain maps to an episode. Watch the series to see the full brain chain in action.
-
-[Episode list coming soon]
 
 ## Build your own brain
 
@@ -76,8 +76,4 @@ A Player Brains is the open-source proof of concept. If you want a brain chain d
 
 ## License
 
-MIT. See [LICENSE](LICENSE).
-
-## A Player Labs
-
-Built by [A Player Labs](https://aplayerlabs.com). We build AI brains that give business owners leverage.
+MIT. See [LICENSE](LICENSE). Built by [A Player Labs](https://aplayerlabs.com).
