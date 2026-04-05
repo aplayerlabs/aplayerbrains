@@ -11,6 +11,5 @@ voice-triggers:
 
 # /upgrade — Get Latest
 
-Pull the latest version of A Player Brains from GitHub and re-run setup.
-
-[CLAUDE.md not yet written — this brain is part of Shipping Phase A]
+Read and follow CLAUDE.md (in the same directory as this file).
+Follow the Session Start Protocol in CLAUDE.md.

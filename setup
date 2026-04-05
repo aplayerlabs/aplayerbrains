@@ -1,55 +1,150 @@
 #!/usr/bin/env bash
 set -euo pipefail
+shopt -s nocasematch 2>/dev/null || true
 
 # A Player Brains — Setup Script
-# Registers all brains as Claude Code slash commands
+# Registers all brains as Claude Code slash commands via directory symlinks.
+# Idempotent — safe to run multiple times.
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+BRAINS_DIR="$SCRIPT_DIR/brains"
 SKILLS_DIR="${HOME}/.claude/skills"
 
-echo "A Player Brains — Setup"
-echo "======================="
+# The brains to register (order = chain sequence)
+BRAINS=(
+  aplayerbrains
+  discover
+  plan
+  setup
+  define
+  design
+  build
+  test
+  launch
+  wrap
+  status
+  upgrade
+)
+
+echo ""
+echo "  A Player Brains — Setup"
+echo "  ======================="
 echo ""
 
-# Ensure skills directory exists
-mkdir -p "$SKILLS_DIR"
+# --- Create directories if needed ---
 
-# Link each brain as a skill
-BRAIN_COUNT=0
-for brain_dir in "$SCRIPT_DIR"/brains/*/; do
-    brain_name=$(basename "$brain_dir")
-    skill_file="$brain_dir/SKILL.md"
+if ! mkdir -p "$SKILLS_DIR" 2>/dev/null; then
+  echo "  ERROR: Could not create $SKILLS_DIR — check permissions."
+  exit 1
+fi
 
-    if [ -f "$skill_file" ]; then
-        target_dir="$SKILLS_DIR/$brain_name"
-        mkdir -p "$target_dir"
+# --- Cleanup old symlinks ---
+# Remove any symlink in ~/.claude/skills/ that points into our repo.
+# Catches both old "aplayerbrains-{name}" pattern and current "{name}" pattern.
 
-        # Symlink the SKILL.md
-        ln -sf "$skill_file" "$target_dir/SKILL.md"
+echo "  Cleaning up old symlinks..."
+CLEANED=0
+for entry in "$SKILLS_DIR"/*/; do
+  [ -d "$entry" ] || continue
+  entry="${entry%/}"
 
-        # Symlink the full brain directory for CLAUDE.md access
-        ln -sf "$brain_dir" "$SKILLS_DIR/aplayerbrains-$brain_name"
-
-        BRAIN_COUNT=$((BRAIN_COUNT + 1))
-        echo "  /$brain_name"
+  # Only touch symlinks (not real directories)
+  if [ -L "$entry" ]; then
+    target="$(readlink "$entry" 2>/dev/null || true)"
+    # Check if this symlink points into our brains directory (nocasematch handles macOS)
+    if [[ "$target" == "$BRAINS_DIR"* ]]; then
+      rm "$entry"
+      CLEANED=$((CLEANED + 1))
     fi
+  fi
+done
+
+if [ "$CLEANED" -gt 0 ]; then
+  echo "  Removed $CLEANED old symlink(s)."
+else
+  echo "  No old symlinks found."
+fi
+echo ""
+
+# --- Create new symlinks ---
+# Each brain directory is symlinked as:
+#   ~/.claude/skills/{brain-name} → /path/to/repo/brains/{brain-name}
+#
+# This means ~/.claude/skills/discover/SKILL.md resolves correctly,
+# AND relative paths inside SKILL.md (like "Read CLAUDE.md") resolve
+# because CLAUDE.md lives in the same real directory.
+
+echo "  Registering brains..."
+echo ""
+REGISTERED=0
+FAILED=0
+
+for brain in "${BRAINS[@]}"; do
+  source_dir="$BRAINS_DIR/$brain"
+  skill_file="$source_dir/SKILL.md"
+  link_path="$SKILLS_DIR/$brain"
+
+  if [ ! -d "$source_dir" ]; then
+    echo "  SKIP  /$brain — directory not found: $source_dir"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
+  if [ ! -f "$skill_file" ]; then
+    echo "  SKIP  /$brain — no SKILL.md found"
+    FAILED=$((FAILED + 1))
+    continue
+  fi
+
+  # Remove stale link/dir if it exists (shouldn't after cleanup, but be safe)
+  if [ -L "$link_path" ] || [ -e "$link_path" ]; then
+    rm -rf "$link_path"
+  fi
+
+  if ln -s "$source_dir" "$link_path" 2>/dev/null; then
+    echo "  OK    /$brain"
+    REGISTERED=$((REGISTERED + 1))
+  else
+    echo "  FAIL  /$brain — could not create symlink (permissions?)"
+    FAILED=$((FAILED + 1))
+  fi
 done
 
 echo ""
-echo "Registered $BRAIN_COUNT brains."
+echo "  ---"
+echo "  Registered: $REGISTERED brain(s)"
+if [ "$FAILED" -gt 0 ]; then
+  echo "  Failed:     $FAILED brain(s)"
+fi
 echo ""
-echo "Type /aplayerbrains in Claude Code to start."
+
+# --- Brain chain ---
+echo "  Brain Chain"
+echo "  ==========="
 echo ""
-echo "Commands:"
-echo "  /aplayerbrains  — Start here (routes you to the right brain)"
-echo "  /discover        — Validate your problem or refine your idea"
-echo "  /plan            — Stress-test the direction"
-echo "  /setup           — Set up GitHub and hosting"
-echo "  /define          — Write product requirements"
-echo "  /design          — See what your app will look like"
-echo "  /build           — Build the application"
-echo "  /test            — Find every bug"
-echo "  /launch          — Deploy and go live"
-echo "  /wrap            — Pause and resume later"
-echo "  /status          — See where you are"
-echo "  /upgrade         — Get the latest brains"
+echo "  /aplayerbrains  → Start here (routes to the right brain)"
+echo "        │"
+echo "  /discover        → Validate problem / refine idea"
+echo "        │"
+echo "  /plan            → Stress-test the direction"
+echo "        │"
+echo "  /setup           → GitHub + hosting"
+echo "        │"
+echo "  /define          → Product requirements"
+echo "        │"
+echo "  /design          → Visual design"
+echo "        │"
+echo "  /build           → Build the app"
+echo "        │"
+echo "  /test            → Find every bug"
+echo "        │"
+echo "  /launch          → Deploy and go live"
+echo "        │"
+echo "  /wrap            → Pause and resume later"
+echo ""
+echo "  Utilities:"
+echo "  /status          → See where you are"
+echo "  /upgrade         → Get the latest brains"
+echo ""
+echo "  Type /aplayerbrains in Claude Code to start."
+echo ""

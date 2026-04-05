@@ -13,8 +13,6 @@ voice-triggers:
 
 # /wrap — Pause and Resume
 
-Read and follow `brains/wrap/CLAUDE.md`.
-
-Capture current state, update SESH.md and STATUS.md, generate a continuation prompt.
-
-[CLAUDE.md not yet written — this brain is part of Shipping Phase A]
+Read and follow CLAUDE.md (in the same directory as this file).
+Start by checking for SESH.md in the current working directory.
+Follow the Session Start Protocol in CLAUDE.md.

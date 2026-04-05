@@ -12,8 +12,6 @@ voice-triggers:
 
 # /design — Design What You'll Build
 
-Read and follow `brains/design/CLAUDE.md`.
-
-Start by reading SESH.md. If missing, create it.
-
-Read and follow the operating contract. Start by reading SESH.md in the project directory.
+Read and follow CLAUDE.md (in the same directory as this file).
+Start by checking for SESH.md in the current working directory.
+Follow the Session Start Protocol in CLAUDE.md.

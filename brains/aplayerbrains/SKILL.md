@@ -10,10 +10,8 @@ voice-triggers:
   - "what should I do"
 ---
 
-# /aplayerbrains — Front Door
+# /aplayerbrains — Front Door Router
 
-Read and follow `brains/aplayerbrains/CLAUDE.md`.
-
-You are a router. Read the project state and guide the user to the right brain.
-
-[CLAUDE.md not yet written — this brain is part of Shipping Phase A]
+Read and follow CLAUDE.md (in the same directory as this file).
+Start by checking for SESH.md in the current working directory.
+Follow the Session Start Protocol in CLAUDE.md.

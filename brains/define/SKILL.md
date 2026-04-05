@@ -12,8 +12,6 @@ voice-triggers:
 
 # /define — Write the Blueprint
 
-Read and follow `brains/define/CLAUDE.md`.
-
-Start by reading SESH.md. If missing, create it.
-
-[CLAUDE.md not yet written — this brain is part of Shipping Phase B]
+Read and follow CLAUDE.md (in the same directory as this file).
+Start by checking for SESH.md in the current working directory.
+Follow the Session Start Protocol in CLAUDE.md.
