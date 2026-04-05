@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# A Player Brains — Setup Script
+# Registers all brains as Claude Code slash commands
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILLS_DIR="${HOME}/.claude/skills"
+
+echo "A Player Brains — Setup"
+echo "======================="
+echo ""
+
+# Ensure skills directory exists
+mkdir -p "$SKILLS_DIR"
+
+# Link each brain as a skill
+BRAIN_COUNT=0
+for brain_dir in "$SCRIPT_DIR"/brains/*/; do
+    brain_name=$(basename "$brain_dir")
+    skill_file="$brain_dir/SKILL.md"
+
+    if [ -f "$skill_file" ]; then
+        target_dir="$SKILLS_DIR/$brain_name"
+        mkdir -p "$target_dir"
+
+        # Symlink the SKILL.md
+        ln -sf "$skill_file" "$target_dir/SKILL.md"
+
+        # Symlink the full brain directory for CLAUDE.md access
+        ln -sf "$brain_dir" "$SKILLS_DIR/aplayerbrains-$brain_name"
+
+        BRAIN_COUNT=$((BRAIN_COUNT + 1))
+        echo "  /$brain_name"
+    fi
+done
+
+echo ""
+echo "Registered $BRAIN_COUNT brains."
+echo ""
+echo "Type /aplayerbrains in Claude Code to start."
+echo ""
+echo "Commands:"
+echo "  /aplayerbrains  — Start here (routes you to the right brain)"
+echo "  /discover        — Validate your problem or refine your idea"
+echo "  /plan            — Stress-test the direction"
+echo "  /setup           — Set up GitHub and hosting"
+echo "  /define          — Write product requirements"
+echo "  /design          — See what your app will look like"
+echo "  /build           — Build the application"
+echo "  /test            — Find every bug"
+echo "  /launch          — Deploy and go live"
+echo "  /wrap            — Pause and resume later"
+echo "  /status          — See where you are"
+echo "  /upgrade         — Get the latest brains"
