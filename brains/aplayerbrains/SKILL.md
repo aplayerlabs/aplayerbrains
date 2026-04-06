@@ -12,6 +12,6 @@ voice-triggers:
 
 # /aplayerbrains — Front Door Router
 
-Read and follow CLAUDE.md (in the same directory as this file).
+Read and follow ${CLAUDE_SKILL_DIR}/CLAUDE.md.
 Start by checking for SESH.md in the current working directory.
 Follow the Session Start Protocol in CLAUDE.md.

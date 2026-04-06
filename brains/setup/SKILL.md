@@ -2,7 +2,7 @@
 name: setup
 version: 0.1.0
 description: |
-  Set up GitHub, hosting, and deployment config for your project.
+  Set up GitHub, hosting, and deploy config so downstream brains can build and ship.
 position-in-pipeline: 3
 voice-triggers:
   - "setup"
@@ -12,6 +12,6 @@ voice-triggers:
 
 # /setup — Set Up Your Infrastructure
 
-Read and follow CLAUDE.md (in the same directory as this file).
+Read and follow ${CLAUDE_SKILL_DIR}/CLAUDE.md.
 Start by checking for SESH.md in the current working directory.
 Follow the Session Start Protocol in CLAUDE.md.

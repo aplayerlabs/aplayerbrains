@@ -2,8 +2,10 @@
 name: design
 version: 0.1.0
 description: |
-  See what your app will look like before any code is written.
+  See what your app will look like before any code is written. Mockups or Figma.
 position-in-pipeline: 5
+effort: "high"
+argument-hint: "mockup, design, or refine"
 voice-triggers:
   - "design"
   - "mockup"
@@ -12,6 +14,6 @@ voice-triggers:
 
 # /design — Design What You'll Build
 
-Read and follow CLAUDE.md (in the same directory as this file).
+Read and follow ${CLAUDE_SKILL_DIR}/CLAUDE.md.
 Start by checking for SESH.md in the current working directory.
 Follow the Session Start Protocol in CLAUDE.md.

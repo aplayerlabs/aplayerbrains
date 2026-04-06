@@ -2,8 +2,9 @@
 name: upgrade
 version: 0.1.0
 description: |
-  Update A Player Brains to the latest version.
+  Pull the latest A Player Brains from GitHub and show what changed.
 position-in-pipeline: 0
+effort: "low"
 voice-triggers:
   - "upgrade"
   - "update brains"
@@ -11,5 +12,5 @@ voice-triggers:
 
 # /upgrade — Get Latest
 
-Read and follow CLAUDE.md (in the same directory as this file).
+Read and follow ${CLAUDE_SKILL_DIR}/CLAUDE.md.
 Follow the Session Start Protocol in CLAUDE.md.
