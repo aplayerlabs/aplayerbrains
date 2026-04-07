@@ -4,7 +4,7 @@
 
 ## Location
 
-This skill lives in the Playbooks skill pack:
+This skill lives in the Playbooks installation:
 
 ```
 ~/.claude/skills/playbooks/playbooks/build/

@@ -6,7 +6,7 @@
 ~/.claude/skills/playbooks/playbooks/launch/
 ```
 
-Do not copy skill files into your project. The skill reads your project directory — it lives in the skill pack.
+Do not copy skill files into your project. The skill reads your project directory — it lives in the Playbooks installation.
 
 ## How to start
 

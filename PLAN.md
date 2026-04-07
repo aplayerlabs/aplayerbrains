@@ -2,7 +2,7 @@
 
 ## What this is
 
-A skill pack for Claude Code that takes a business owner from "I have a problem" or "I have an idea" to a shipped, working application — without needing to know how to code.
+A framework for Claude Code that takes a business owner from "I have a problem" or "I have an idea" to a shipped, working application — without needing to know how to code.
 
 ## Who it's for
 
