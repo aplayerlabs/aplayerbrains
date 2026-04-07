@@ -1,14 +1,14 @@
 # Contributing
 
-How to contribute to A Player Brains.
+How to contribute to A Player Playbooks.
 
 ## How to contribute
 
 ### What's welcome
 
-- New brains that extend the pipeline or serve specific domains
+- New playbooks that extend the pipeline or serve specific domains
 - Playbook improvements (testing patterns, design patterns, etc.)
-- Bug fixes in existing brain specs
+- Bug fixes in existing playbook specs
 - Documentation improvements
 - YouTube episode suggestions or scripts
 
@@ -16,7 +16,7 @@ How to contribute to A Player Brains.
 
 - Changes to the pipeline order
 - Changes to the SESH.md or STATUS.md contract format
-- Removing sections from existing brains
+- Removing sections from existing playbooks
 - Changing the 14-section CLAUDE.md structure
 
 If you want to propose changes in any of these areas, open an issue first and explain the reasoning. We'll discuss before any code is written.
@@ -26,7 +26,7 @@ If you want to propose changes in any of these areas, open an issue first and ex
 1. Fork the repo
 2. Create a branch from `staging` (not main)
 3. Make your changes
-4. Verify against the [brain blueprint checklist](BRAIN-BLUEPRINT.md#checklist)
+4. Verify against the [playbook blueprint checklist](PLAYBOOK-BLUEPRINT.md#checklist)
 5. Submit a PR to `staging`
 6. Fill out the PR template
 
@@ -36,15 +36,15 @@ If you want to propose changes in any of these areas, open an issue first and ex
 - `staging` — integration branch. PRs land here. Tested before promoting to main.
 - `dev` — maintainer's active development. Don't target PRs here.
 
-## Creating a new brain
+## Creating a new playbook
 
-1. Read [BRAIN-BLUEPRINT.md](BRAIN-BLUEPRINT.md)
-2. Create a folder in `brains/your-brain-name/`
+1. Read [PLAYBOOK-BLUEPRINT.md](PLAYBOOK-BLUEPRINT.md)
+2. Create a folder in `playbooks/your-playbook-name/`
 3. Create all required files: `SKILL.md`, `CLAUDE.md`, `USAGE.md`, `SPEC_CHANGELOG.md`, `SPEC_DECISIONS.md`
 4. Follow the 14-section structure for CLAUDE.md
-5. Use a unique 2-letter prefix for spec decisions (check existing brains to avoid collisions)
-6. Test your brain by invoking it in Claude Code
-7. Submit a PR to `staging` with the brain blueprint checklist completed
+5. Use a unique 2-letter prefix for spec decisions (check existing playbooks to avoid collisions)
+6. Test your playbook by invoking it in Claude Code
+7. Submit a PR to `staging` with the playbook blueprint checklist completed
 
 ## Code of conduct
 

@@ -1,0 +1,12 @@
+# Project Status
+
+## Current Stage
+Not started
+
+## What's Done
+
+## What's Next
+Start with /playbooks or /discover to validate your problem.
+
+## Blockers
+None

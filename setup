@@ -2,17 +2,17 @@
 set -euo pipefail
 shopt -s nocasematch 2>/dev/null || true
 
-# A Player Brains — Setup Script
-# Registers all brains as Claude Code slash commands via directory symlinks.
+# A Player Playbooks — Setup Script
+# Registers all playbooks as Claude Code slash commands via directory symlinks.
 # Idempotent — safe to run multiple times.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
-BRAINS_DIR="$SCRIPT_DIR/brains"
+PLAYBOOKS_DIR="$SCRIPT_DIR/playbooks"
 SKILLS_DIR="${HOME}/.claude/skills"
 
-# The brains to register (order = chain sequence)
-BRAINS=(
-  aplayerbrains
+# The playbooks to register (order = chain sequence)
+PLAYBOOKS=(
+  playbooks
   discover
   plan
   setup
@@ -27,7 +27,7 @@ BRAINS=(
 )
 
 echo ""
-echo "  A Player Brains — Setup"
+echo "  A Player Playbooks — Setup"
 echo "  ======================="
 echo ""
 
@@ -40,7 +40,7 @@ fi
 
 # --- Cleanup old symlinks ---
 # Remove any symlink in ~/.claude/skills/ that points into our repo.
-# Catches both old "aplayerbrains-{name}" pattern and current "{name}" pattern.
+# Catches both old "playbooks-{name}" pattern and current "{name}" pattern.
 
 echo "  Cleaning up old symlinks..."
 CLEANED=0
@@ -51,8 +51,8 @@ for entry in "$SKILLS_DIR"/*/; do
   # Only touch symlinks (not real directories)
   if [ -L "$entry" ]; then
     target="$(readlink "$entry" 2>/dev/null || true)"
-    # Check if this symlink points into our brains directory (nocasematch handles macOS)
-    if [[ "$target" == "$BRAINS_DIR"* ]]; then
+    # Check if this symlink points into our playbooks directory (nocasematch handles macOS)
+    if [[ "$target" == "$PLAYBOOKS_DIR"* ]]; then
       rm "$entry"
       CLEANED=$((CLEANED + 1))
     fi
@@ -67,31 +67,31 @@ fi
 echo ""
 
 # --- Create new symlinks ---
-# Each brain directory is symlinked as:
-#   ~/.claude/skills/{brain-name} → /path/to/repo/brains/{brain-name}
+# Each playbook directory is symlinked as:
+#   ~/.claude/skills/{playbook-name} → /path/to/repo/playbooks/{playbook-name}
 #
 # This means ~/.claude/skills/discover/SKILL.md resolves correctly,
 # AND relative paths inside SKILL.md (like "Read CLAUDE.md") resolve
 # because CLAUDE.md lives in the same real directory.
 
-echo "  Registering brains..."
+echo "  Registering playbooks..."
 echo ""
 REGISTERED=0
 FAILED=0
 
-for brain in "${BRAINS[@]}"; do
-  source_dir="$BRAINS_DIR/$brain"
+for playbook in "${PLAYBOOKS[@]}"; do
+  source_dir="$PLAYBOOKS_DIR/$playbook"
   skill_file="$source_dir/SKILL.md"
-  link_path="$SKILLS_DIR/$brain"
+  link_path="$SKILLS_DIR/$playbook"
 
   if [ ! -d "$source_dir" ]; then
-    echo "  SKIP  /$brain — directory not found: $source_dir"
+    echo "  SKIP  /$playbook — directory not found: $source_dir"
     FAILED=$((FAILED + 1))
     continue
   fi
 
   if [ ! -f "$skill_file" ]; then
-    echo "  SKIP  /$brain — no SKILL.md found"
+    echo "  SKIP  /$playbook — no SKILL.md found"
     FAILED=$((FAILED + 1))
     continue
   fi
@@ -102,27 +102,27 @@ for brain in "${BRAINS[@]}"; do
   fi
 
   if ln -s "$source_dir" "$link_path" 2>/dev/null; then
-    echo "  OK    /$brain"
+    echo "  OK    /$playbook"
     REGISTERED=$((REGISTERED + 1))
   else
-    echo "  FAIL  /$brain — could not create symlink (permissions?)"
+    echo "  FAIL  /$playbook — could not create symlink (permissions?)"
     FAILED=$((FAILED + 1))
   fi
 done
 
 echo ""
 echo "  ---"
-echo "  Registered: $REGISTERED brain(s)"
+echo "  Registered: $REGISTERED playbook(s)"
 if [ "$FAILED" -gt 0 ]; then
-  echo "  Failed:     $FAILED brain(s)"
+  echo "  Failed:     $FAILED playbook(s)"
 fi
 echo ""
 
-# --- Brain chain ---
-echo "  Brain Chain"
+# --- Playbook chain ---
+echo "  Playbook Chain"
 echo "  ==========="
 echo ""
-echo "  /aplayerbrains  → Start here (routes to the right brain)"
+echo "  /playbooks  → Start here (routes to the right playbook)"
 echo "        │"
 echo "  /discover        → Validate problem / refine idea"
 echo "        │"
@@ -144,7 +144,7 @@ echo "  /wrap            → Pause and resume later"
 echo ""
 echo "  Utilities:"
 echo "  /status          → See where you are"
-echo "  /upgrade         → Get the latest brains"
+echo "  /upgrade         → Get the latest playbooks"
 echo ""
-echo "  Type /aplayerbrains in Claude Code to start."
+echo "  Type /playbooks in Claude Code to start."
 echo ""
