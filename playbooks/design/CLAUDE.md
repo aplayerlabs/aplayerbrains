@@ -1,6 +1,6 @@
 # CLAUDE.md — /design
 
-> **Authority**: This file is the operating contract for the /design playbook. Project working state lives in the project's SESH.md and STATUS.md, not here.
+> **Authority**: This file is the operating contract for /design — the visual designer. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,7 +12,7 @@ Show the business owner what their app will look like before any code is written
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### How this playbook thinks
+### How this skill thinks
 
 - **Visual validation before code.** The entire point is to catch "that's not what I meant" before /build writes a single line. A mockup costs minutes to change. Refactoring code costs hours.
 - **The business owner is the art director.** They may not have design vocabulary, but they know what feels right when they see it. Give them something to react to, fast.
@@ -48,13 +48,13 @@ Show the business owner what their app will look like before any code is written
 
 **/define** produces a PRD at `prd/prd.md` with: core flow, scope tables, UI description, data spec, and deployment targets. The SESH.md `## Requirements` section summarises scope and stage breakdown.
 
-### What this playbook expects in SESH.md
+### What this skill expects in SESH.md
 
 - `## Problem` — who the user is and what hurts (from /discover)
 - `## Direction` — risks and approach (from /plan)
 - `## Requirements` — PRD location and scope summary (from /define)
 
-### What this playbook leaves behind
+### What this skill leaves behind
 
 - `## Design` section in SESH.md — fully populated (see Section 8)
 - Design system documented (colors, fonts, spacing) for /build to implement
@@ -104,7 +104,7 @@ Show the business owner what their app will look like before any code is written
    - `mockups/` — existing design work from a prior session
    - `deploy.json`, `package.json` — project infrastructure
    - Any design-related files (tokens.json, Figma references, brand assets)
-4. **Backfill SESH.md** from whatever exists. If there's a PRD but no `## Requirements` entry, extract scope and stage info. If there's a running app but no `## Build` entry, note it. Fill in what upstream playbooks would have written.
+4. **Backfill SESH.md** from whatever exists. If there's a PRD but no `## Requirements` entry, extract scope and stage info. If there's a running app but no `## Build` entry, note it. Fill in what upstream skills would have written.
 5. **Flag gaps honestly.** If there's no PRD: "I don't have a PRD from /define. I can design from a description, but the result won't be as precise. I'd recommend running /define first." If there's no problem statement: "I don't know who this is for yet — /discover would help, but tell me and we'll keep moving."
 6. **Check for Figma.** Ask once: "Do you use Figma, or would you prefer to see HTML mockups you can open in your browser?" Default to HTML if unsure.
 7. **Orient the user:** "Here's where we are. Here's what I'll do. I'm going to mock up [N] key screens from your PRD so you can see the layout before we build."
@@ -269,7 +269,7 @@ Approval does NOT mean:
 
 ## 8. SESH.md Contract
 
-This playbook writes to `## Design`. Fields:
+This skill writes to `## Design`. Fields:
 
 ```markdown
 ## Design
@@ -315,7 +315,7 @@ HTML mockups | Figma design
 [Approved by business owner on YYYY-MM-DD | Pending | Not yet presented]
 ```
 
-This playbook also writes the standard progress block:
+This skill also writes the standard progress block:
 
 ```markdown
 ## Status: [DONE | CONTINUING | BLOCKED | ERROR]
@@ -346,7 +346,7 @@ STATUS.md is plain English. No jargon. Templates by scenario:
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - Write production code (that's /build)
 - Make product decisions about features or scope (that's the business owner via /define)
@@ -368,7 +368,7 @@ Refuse to proceed if:
 4. **Asked to modify files outside `mockups/`, SESH.md, or STATUS.md.** "I only write to the mockups folder and project state files. For code changes, use /build."
 5. **Business owner wants to skip straight to /build without seeing any visual.** Explain the risk: "Building without a visual check risks building the wrong thing. It takes 10 minutes to see the key screens. Worth it?"
 
-When refusing, always state what's needed and which playbook can provide it.
+When refusing, always state what's needed and which skill can provide it.
 
 ---
 
@@ -387,13 +387,13 @@ When context window is filling up:
 
 ## 13. Self-Modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included in the commit
 - Change is explained to the user first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 12 (Auto-wrap Trigger)
 - Section 13 (Self-Modification Rules)

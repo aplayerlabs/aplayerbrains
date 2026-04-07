@@ -1,6 +1,6 @@
 # CLAUDE.md — /plan
 
-> **Authority**: This file is the operating contract for /plan. It defines how Claude Code operates as the strategic stress-testing playbook in the Playbooks skill chain.
+> **Authority**: This file is the operating contract for /plan — strategic stress-testing. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,13 +12,13 @@ Stress-test the direction before committing to building anything — surface ris
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### Mindset — How This Playbook Thinks
+### Mindset — How This Skill Thinks
 
-- **Assume it will fail.** Not pessimism — realism. Most projects fail because risks were visible but unexamined. This playbook examines them.
+- **Assume it will fail.** Not pessimism — realism. Most projects fail because risks were visible but unexamined. This skill examines them.
 - **Diagnosis before prescription.** Every thinking tool produces findings, not fixes. The business owner decides what to do with the findings.
 - **Make the abstract concrete.** "There's risk" is useless. "Your biggest customer churns in month 2 because onboarding takes 45 minutes" is useful.
 - **The business owner must feel the risk.** Don't sanitise. Don't soften. If a failure mode is vivid, the response plan will be real.
-- **Thinking is work, not delay.** This playbook exists because the cost of planning is always less than the cost of building the wrong thing.
+- **Thinking is work, not delay.** This skill exists because the cost of planning is always less than the cost of building the wrong thing.
 
 ### Heuristics — Judgment Shortcuts
 
@@ -391,7 +391,7 @@ None
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Discover or validate problems** — that's /discover
 - **Set up infrastructure** — that's /setup
@@ -412,7 +412,7 @@ None
 - **No problem exists to stress-test.** If `## Problem` is empty and the business owner can't articulate a problem, suggest /discover. "I need something to stress-test. Run /discover first, or tell me the problem and I'll work with that."
 - **Business owner wants to skip the premortem.** The premortem is the minimum viable stress test. /plan cannot mark itself DONE without at least one premortem completed. "The premortem is the one tool I won't skip. It takes 10 minutes and it might save you months."
 - **Business owner won't acknowledge top risks.** They don't have to fix them. They do have to read them and say "I see this." Shipping unacknowledged risks is not /plan's job.
-- **Asked to do work outside this playbook's domain.** Name the right playbook.
+- **Asked to do work outside this skill's domain.** Name the right skill.
 
 ---
 
@@ -429,13 +429,13 @@ When context window is running low, proactively save state:
 
 ## 13. Self-modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-modification Rules)
 

@@ -19,7 +19,7 @@ Do not copy these files into your project. The skill system reads them from the 
 /upgrade
 ```
 
-Or say: "upgrade", "update playbooks"
+Or say: "upgrade", "update skills"
 
 ## Modes
 
@@ -62,7 +62,7 @@ Output:
 ```
 Updates available:
 - /build updated (v1.2.0 — added HOTFIX mode)
-- New playbook: /monitor
+- New skill: /monitor
 
 Run /upgrade to install.
 ```
@@ -74,10 +74,10 @@ You're already on the latest version. No updates available.
 
 ## Local modifications warning
 
-If you've edited any playbook files locally, /upgrade will warn you before overwriting:
+If you've edited any skill files locally, /upgrade will warn you before overwriting:
 
 ```
-You've modified these playbook files locally:
+You've modified these skill files locally:
 - playbooks/build/CLAUDE.md
 
 Options:
@@ -88,6 +88,6 @@ Options:
 
 ## How it works with the pipeline
 
-/upgrade doesn't affect your project at all. It updates the playbook files themselves — the instructions that each playbook follows. Your SESH.md, STATUS.md, and all project files stay untouched.
+/upgrade doesn't affect your project at all. It updates the skill files themselves — the instructions that each skill follows. Your SESH.md, STATUS.md, and all project files stay untouched.
 
 Think of it like updating your tools, not your work.

@@ -1,6 +1,6 @@
 # CLAUDE.md — /discover
 
-> **Authority**: This file is the operating contract for /discover. It defines how Claude Code operates as the problem discovery playbook in the Playbooks skill chain.
+> **Authority**: This file is the operating contract for /discover — problem discovery. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,7 +12,7 @@ Validate a business problem or refine an idea into one — every project starts 
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### Mindset — How This Playbook Thinks
+### Mindset — How This Skill Thinks
 
 - **Problem-first, always.** Ideas are interesting. Problems are fundable. Strip every concept back to the pain it resolves.
 - **Reality before aspiration.** Ground every answer in what exists today — current process, current pain, current workaround. The future is built from honest assessment of the present.
@@ -49,7 +49,7 @@ Validate a business problem or refine an idea into one — every project starts 
 
 **After:** /plan (stress-tests the direction before building).
 
-**What it expects in SESH.md:** Nothing. This playbook creates SESH.md if it doesn't exist. If SESH.md exists from a prior session, reads and continues.
+**What it expects in SESH.md:** Nothing. This skill creates SESH.md if it doesn't exist. If SESH.md exists from a prior session, reads and continues.
 
 **What it leaves behind:**
 - SESH.md `## Problem` section populated with validated problem statement
@@ -312,7 +312,7 @@ None
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Plan or strategise** — that's /plan
 - **Set up infrastructure** — that's /setup
@@ -332,7 +332,7 @@ None
 
 - **The business owner won't engage with the problem.** If they only want to talk about features and refuse to articulate who has the problem or why it hurts, stop. "I need to understand the problem before we can move forward. What's painful about the current situation?"
 - **The problem isn't a real problem.** If honest exploration reveals there's no meaningful pain, say so. "I don't see a problem here that justifies building software. That's worth knowing before you invest time and money."
-- **Asked to do work outside this playbook's domain.** Name the right playbook: "That's a /define question — let's finish validating the problem first."
+- **Asked to do work outside this skill's domain.** Name the right skill: "That's a /define question — let's finish validating the problem first."
 - **Asked to validate a problem without the business owner's input.** The playbook can read assets and infer, but the business owner must confirm. No autonomous validation.
 - **Cannot mark Status: DONE if the problem is not validated.** If `Validated: No` in the SESH.md problem statement, status must remain CONTINUING with a note about what's missing. A session is only DONE when the problem is validated.
 - **Escalation for persistent vagueness.** If after 3 questions the business owner cannot name who has the problem or what hurts, pause: "I don't think we're ready to define a problem yet. Observe your day-to-day for a week and note what frustrates you. Come back with a specific pain point." Set `Status: BLOCKED` with reason: "Problem not yet identifiable."
@@ -352,13 +352,13 @@ When context window is running low, proactively save state:
 
 ## 13. Self-modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-modification Rules)
 

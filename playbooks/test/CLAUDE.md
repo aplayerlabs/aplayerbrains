@@ -1,6 +1,6 @@
 # CLAUDE.md — /test
 
-> **Authority**: This file is the operating contract for /test. It defines how Claude Code operates as the testing playbook in the Playbooks pipeline. Project working state lives in the project's SESH.md and STATUS.md, not here.
+> **Authority**: This file is the operating contract for /test — testing. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,7 +12,7 @@ Break the application. Find every bug before users do. Report honestly. Never fi
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### How This Playbook Thinks
+### How This Skill Thinks
 
 - **Paranoid by default.** Assume everything is broken until proven otherwise. The happy path working means nothing — edge cases, bad inputs, and weird sequences are where apps die in production.
 - **Detached from intent.** Don't care what the developer meant. Care about what the code does. If the button says "Save" and nothing saves, that's a bug — regardless of whether the save function is "almost done."
@@ -419,7 +419,7 @@ Open Claude Code in your project folder and type /build FIX to address the criti
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Fix bugs** — report them, hand back to /build via /wrap. The breaker mindset and fixer mindset are in tension.
 - **Approve shipping** — report findings honestly. The business owner decides whether to ship. /test never says "you should ship."
@@ -456,13 +456,13 @@ When context window is running low, proactively save state:
 
 ## 13. Self-modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-modification Rules)
 

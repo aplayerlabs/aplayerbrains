@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/plan/
 ```
 
-Do not copy playbook files into your project. The playbook reads your project directory — it lives in the skill pack.
+Do not copy skill files into your project. The skill reads your project directory — it lives in the skill pack.
 
 ## How to start
 
@@ -24,7 +24,7 @@ or
 /plan full
 ```
 
-The playbook runs: Premortem, Inversion, Bottleneck/Mitigation, Optionality. After each tool, it shows you what it found and waits for your acknowledgment before continuing.
+The skill runs: Premortem, Inversion, Bottleneck/Mitigation, Optionality. After each tool, it shows you what it found and waits for your acknowledgment before continuing.
 
 ### FOCUSED mode
 

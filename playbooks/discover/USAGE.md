@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/discover/
 ```
 
-Do not copy playbook files into your project. The playbook reads your project directory — it lives in the skill pack.
+Do not copy skill files into your project. The skill reads your project directory — it lives in the skill pack.
 
 ## How to start
 
@@ -24,7 +24,7 @@ or
 /discover problem
 ```
 
-The playbook will ask you structured questions about the problem: who has it, what they do today, why it hurts, how often.
+The skill will ask you structured questions about the problem: who has it, what they do today, why it hurts, how often.
 
 ### IDEA mode
 
@@ -34,7 +34,7 @@ You have a concept but haven't pinned down the problem yet.
 /discover idea
 ```
 
-The playbook will work backward from your idea to find the problem underneath. "Who would use this, and what problem does it solve for them?"
+The skill will work backward from your idea to find the problem underneath. "Who would use this, and what problem does it solve for them?"
 
 ## What goes where
 
@@ -62,7 +62,7 @@ Drop files into a `reference/` folder in your project root. /discover reads:
 - Screenshots (.png, .jpg)
 - Any text files
 
-The playbook reads these directly — you don't need to explain what's in them.
+The skill reads these directly — you don't need to explain what's in them.
 
 ## When it's done
 
@@ -81,4 +81,4 @@ If you run /discover on a project that already has a validated problem:
 /playbooks → [ /discover ] → /plan → ...
 ```
 
-/discover is the first playbook. It creates the project state files (SESH.md, STATUS.md) that every other playbook reads and builds on.
+/discover is the first skill. It creates the project state files (SESH.md, STATUS.md) that every other skill reads and builds on.

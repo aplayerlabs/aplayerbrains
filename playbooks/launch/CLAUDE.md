@@ -1,6 +1,6 @@
 # CLAUDE.md — /launch
 
-> **Authority**: This file is the operating contract for /launch. It defines how Claude Code operates as the deployment playbook in the Playbooks skill chain. Project working state lives in the project's SESH.md and STATUS.md, not here.
+> **Authority**: This file is the operating contract for /launch — deployment. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,7 +12,7 @@ Package, version, deploy. Get the app live on the internet.
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### How This Playbook Thinks
+### How This Skill Thinks
 
 - **The finish line is a live URL.** Everything /launch does serves one outcome: the business owner's app running on the internet, reachable by their users. Release notes, version bumps, and checklists are means, not ends.
 - **Measure twice, cut once.** Deployment is a one-way door in the eyes of users. PREFLIGHT exists because catching problems before deploy costs zero. Catching them after costs trust.
@@ -420,7 +420,7 @@ Ran the pre-deployment checklist.
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Test the application** — that's /test. /launch checks ship readiness from /test's results but doesn't run its own tests.
 - **Fix bugs** — that's /build. If PREFLIGHT finds critical bugs, /launch blocks and suggests /build FIX.
@@ -459,13 +459,13 @@ When context window is running low, proactively save state:
 
 ## 13. Self-modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-modification Rules)
 

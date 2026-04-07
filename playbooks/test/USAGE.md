@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/test/
 ```
 
-Do not copy playbook files into your project. The playbook reads your project directory — it lives in the skill pack.
+Do not copy skill files into your project. The skill reads your project directory — it lives in the skill pack.
 
 ## How to start
 
@@ -24,7 +24,7 @@ or
 /test hunt
 ```
 
-The playbook will read your project, understand what was built, and systematically try to break it.
+The skill will read your project, understand what was built, and systematically try to break it.
 
 ### VERIFY mode
 

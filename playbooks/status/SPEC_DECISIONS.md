@@ -12,5 +12,5 @@
 
 ## SD-003: Always end with a recommendation
 **Date:** 2026-04-06
-**Decision:** Every status report ends with "Type /[playbook] to continue" or equivalent.
+**Decision:** Every status report ends with "Type /[skill] to continue" or equivalent.
 **Why:** Status without direction is a dead end. The business owner came here because they don't know what to do next. Telling them where they are without telling them what to do next wastes the interaction. The recommendation closes the loop.

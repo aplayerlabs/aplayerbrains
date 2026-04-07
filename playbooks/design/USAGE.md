@@ -8,7 +8,7 @@ Show the business owner what their app will look like before code is written.
 
 `playbooks/design/` inside the Playbooks skill pack.
 
-Do not copy into projects. The playbook reads from and writes to the project directory.
+Do not copy into projects. The skill reads from and writes to the project directory.
 
 ---
 

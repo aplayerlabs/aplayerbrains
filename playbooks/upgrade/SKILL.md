@@ -7,7 +7,7 @@ position-in-pipeline: 0
 effort: "low"
 voice-triggers:
   - "upgrade"
-  - "update playbooks"
+  - "update skills"
 ---
 
 # /upgrade — Get Latest

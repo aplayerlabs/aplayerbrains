@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/setup/
 ```
 
-Do not copy playbook files into projects. /setup reads from the skill folder and writes to your project directory and `~/.apb/`.
+Do not copy skill files into projects. /setup reads from the skill folder and writes to your project directory and `~/.apb/`.
 
 ## How to start
 

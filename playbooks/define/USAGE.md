@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/define/
 ```
 
-Do not copy playbook files into projects. /define reads from the skill folder and writes to your project directory.
+Do not copy skill files into projects. /define reads from the skill folder and writes to your project directory.
 
 ## How to start
 

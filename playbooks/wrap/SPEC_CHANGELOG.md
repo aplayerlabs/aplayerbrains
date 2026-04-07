@@ -5,5 +5,5 @@
 - Two modes: WRAP (manual) and AUTO (context-triggered)
 - Five-step wrap process: inventory, SESH.md, STATUS.md, continuation target, continuation prompt
 - Backward movement support (e.g., /test wraps pointing to /build FIX)
-- Active playbook mode extraction from target playbook's CLAUDE.md
+- Active playbook mode extraction from target skill's CLAUDE.md
 - 14 sections in CLAUDE.md

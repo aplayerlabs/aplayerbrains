@@ -1,6 +1,6 @@
 # Spec Decisions — /build
 
-Why the rules exist. Decisions that shaped this playbook's design.
+Why the rules exist. Decisions that shaped this skill's design.
 
 ---
 
@@ -20,7 +20,7 @@ Why the rules exist. Decisions that shaped this playbook's design.
 
 **Decision:** /build picks the technology stack based on PRD requirements. The business owner doesn't choose between React and Next.js.
 
-**Why:** The target audience is non-technical business owners. Asking them to choose a JavaScript framework is like asking a patient to choose their anesthesia. The playbook reads the requirements (needs SEO? needs a database? client-side only?) and makes the call. Technical decisions are documented in docs/architecture.md for traceability, but they're not approval-gated.
+**Why:** The target audience is non-technical business owners. Asking them to choose a JavaScript framework is like asking a patient to choose their anesthesia. The skill reads the requirements (needs SEO? needs a database? client-side only?) and makes the call. Technical decisions are documented in docs/architecture.md for traceability, but they're not approval-gated.
 
 ---
 
@@ -40,7 +40,7 @@ Why the rules exist. Decisions that shaped this playbook's design.
 
 **Decision:** Some files /build updates freely (tasks, bugs, CHANGELOG). Others require business owner approval (architecture, decisions, requirements, roadmap).
 
-**Why:** Borrowed from coder-v2 (SD-003). Balances flow with control. Don't want to stop for every task status update — that kills momentum in a playbook that runs for many sessions. But changing architecture or requirements changes the contract with the business owner, so those need a checkpoint. The line is: operational state = auto-update, intent and boundaries = ask first.
+**Why:** Borrowed from coder-v2 (SD-003). Balances flow with control. Don't want to stop for every task status update — that kills momentum in a skill that runs for many sessions. But changing architecture or requirements changes the contract with the business owner, so those need a checkpoint. The line is: operational state = auto-update, intent and boundaries = ask first.
 
 ---
 
@@ -60,7 +60,7 @@ Why the rules exist. Decisions that shaped this playbook's design.
 
 **Decision:** /build refuses to implement features not in the PRD. New feature requests are redirected to /define.
 
-**Why:** The pipeline exists to prevent the most common failure mode in software projects: building something nobody asked for. /define is where scope decisions happen. /build is where scope decisions get executed. If /build also makes scope decisions, the pipeline collapses into "one playbook does everything" and the business owner loses their guard rails. Saying "that's not in the requirements" is protecting the business owner's time and money.
+**Why:** The pipeline exists to prevent the most common failure mode in software projects: building something nobody asked for. /define is where scope decisions happen. /build is where scope decisions get executed. If /build also makes scope decisions, the pipeline collapses into "one skill does everything" and the business owner loses their guard rails. Saying "that's not in the requirements" is protecting the business owner's time and money.
 
 ---
 

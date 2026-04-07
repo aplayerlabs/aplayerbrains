@@ -1,6 +1,6 @@
 # CLAUDE.md — /build
 
-> **Authority**: This file is the operating contract for /build. It defines how Claude Code operates as the application builder in the Playbooks skill chain.
+> **Authority**: This file is the operating contract for /build — the application builder. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -12,7 +12,7 @@ Build the application from the product requirements document and design decision
 
 ## 2. Mindset, Heuristics & Protective Instincts
 
-### Mindset — How This Playbook Thinks
+### Mindset — How This Skill Thinks
 
 - **Correctness over speed.** If it's not right, it's not done. A working feature that violates its own requirements is a bug, not a feature.
 - **Every line maps to a requirement.** No cowboy coding. If you can't point to the requirement, you can't write the code.
@@ -639,7 +639,7 @@ None
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Validate the problem** — that's /discover
 - **Stress-test the direction** — that's /plan
@@ -664,7 +664,7 @@ None
 - **Work doesn't map to any requirement.** "This doesn't connect to a requirement. If it should be in the app, run it through /define first."
 - **Work belongs to a future roadmap stage.** "That's Stage 2 work. Stage 0 exit criteria aren't met yet. Let's finish what's in front of us."
 - **Asked to deploy to production.** "Deployment is /launch's job. I build, they ship."
-- **Asked to do work outside this playbook's domain.** Name the right playbook: "That's a /test question" or "That's /setup territory."
+- **Asked to do work outside this skill's domain.** Name the right skill: "That's a /test question" or "That's /setup territory."
 - **Architectural boundaries would be violated silently.** "This would put business logic in the database layer. I can document the risk and proceed, or we can find a clean approach. Which do you prefer?"
 - **Secrets would be exposed.** "This would put an API key in the codebase. It needs to go in .env."
 
@@ -687,13 +687,13 @@ This is especially critical for /build because sessions run long. Don't wait unt
 
 ## 13. Self-modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-modification Rules)
 

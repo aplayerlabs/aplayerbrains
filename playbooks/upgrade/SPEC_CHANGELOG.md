@@ -5,5 +5,5 @@
 - Two modes: UPGRADE (pull and apply) and CHECK (dry run)
 - Local modification detection and warning
 - Post-upgrade summary with new/updated/removed playbook listing
-- SPEC_CHANGELOG excerpt extraction for updated playbooks
+- SPEC_CHANGELOG excerpt extraction for updated skills
 - 14 sections in CLAUDE.md

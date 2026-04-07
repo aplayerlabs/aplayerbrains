@@ -41,7 +41,7 @@ Structured handoff data. Each skill owns a section. Sections accumulate as the p
 ## Deployment       ← written by /launch
 ```
 
-Every playbook also writes a standard progress block at the bottom:
+Every skill also writes a standard progress block at the bottom:
 
 ```
 ## Status: [DONE | CONTINUING | BLOCKED | ERROR]
@@ -88,36 +88,36 @@ Each skill follows the same protocol:
 **On start:**
 1. Check if SESH.md exists
 2. If yes: read it, understand current state, continue
-3. If no: create it (the playbook is the first touch on this project)
+3. If no: create it (this skill is the first touch on this project)
 4. Read STATUS.md if it exists
 5. Orient the user: "Here's where we are. Here's what I'll do."
 
 **On finish (or /wrap):**
 1. Update SESH.md — own section + progress block
 2. Update STATUS.md — plain English summary
-3. If wrapping: generate continuation prompt naming the next playbook
+3. If wrapping: generate continuation prompt naming the next skill
 
 ## Direct entry
 
-Any playbook can be entered directly without going through the full skill chain. When a playbook is entered directly:
+Any skill can be entered directly without going through the full skill chain. When a skill is entered directly:
 
 0. If SESH.md does not exist, check git history (`git show HEAD:SESH.md`). If recoverable, restore it and notify: "SESH.md was missing but I recovered it from your last commit." If not recoverable (e.g., initial commit with no prior SESH.md, detached HEAD, or repository has no commits yet) -- proceed with creating a fresh SESH.md and backfilling from project artifacts.
 1. Check if SESH.md exists. If not, create it with all section headers.
-2. Look around the project for anything upstream playbooks would have produced — PRD, deploy.json, package.json, existing docs, running app, design files. Read what's there.
+2. Look around the project for anything upstream skills would have produced — PRD, deploy.json, package.json, existing docs, running app, design files. Read what's there.
 3. Backfill SESH.md from whatever exists. If there's a PRD, extract the problem statement into `## Problem`, the scope into `## Requirements`, any design notes into `## Design`. If there's a deploy.json, populate `## Infrastructure`. If there's a running app, note it in `## Build`.
 4. Flag what's genuinely missing. Tell the user honestly: "I don't have a validated direction from /plan. That means we haven't stress-tested this idea yet. I'd recommend running /plan, but I can work with what we have."
 5. Do NOT block. Adapt and proceed.
 
 The pattern is: **read the room, backfill SESH.md from whatever exists, flag the gaps, keep moving.**
 
-This means the skill chain is the recommended path, but not the only path. Someone who already has a PRD can type /build directly — the playbook reads the PRD, backfills SESH.md, and starts building. Someone who just wants to test an existing app can type /test directly — the playbook looks at the codebase and proceeds.
+This means the skill chain is the recommended path, but not the only path. Someone who already has a PRD can type /build directly — the skill reads the PRD, backfills SESH.md, and starts building. Someone who just wants to test an existing app can type /test directly — the skill looks at the codebase and proceeds.
 
-## Re-entry to a completed playbook
+## Re-entry to a completed skill
 
-When a playbook is invoked on a project where it has already run (its SESH.md section is populated):
+When a skill is invoked on a project where it has already run (its SESH.md section is populated):
 
 1. Acknowledge the existing work: "You already have a validated problem: [X]."
-2. Offer three options: **refine** (iterate on what's there), **restart** (clear and redo), or **skip** (move to the next playbook).
+2. Offer three options: **refine** (iterate on what's there), **restart** (clear and redo), or **skip** (move to the next skill).
 3. Default to refine. Never silently overwrite prior work.
 
 ## SESH.md is git-tracked
@@ -139,7 +139,7 @@ On session start, check for `.sesh.lock` in the project root. If it exists and w
 
 ## Auto-wrap
 
-When context window is running low, the playbook should proactively trigger /wrap behavior rather than waiting for the user to notice. This is especially critical for /build which runs long sessions. The playbook:
+When context window is running low, the skill should proactively trigger /wrap behavior rather than waiting for the user to notice. This is especially critical for /build which runs long sessions. The skill:
 
 1. Detects context is filling up
 2. Tells the user: "Context is getting full. Let me save our progress."
@@ -161,20 +161,20 @@ Playbooks always read `~/.apb/config.yaml` and `deploy.json` fresh at session st
 4. Generates a continuation prompt ready to paste into the next session
 
 The continuation prompt includes:
-- Which playbook to re-enter
+- Which skill to re-enter
 - What mode
 - Where work stopped
 - What's next
 
-**Backward movement:** /wrap can point to a different playbook than the one that just ran. If /test finds bugs, /wrap generates a continuation prompt pointing to /build FIX. After /build fixes them, /wrap points back to /test VERIFY. The skill chain stays linear — /wrap handles direction changes.
+**Backward movement:** /wrap can point to a different skill than the one that just ran. If /test finds bugs, /wrap generates a continuation prompt pointing to /build FIX. After /build fixes them, /wrap points back to /test VERIFY. The skill chain stays linear — /wrap handles direction changes.
 
 **SESH.md always takes precedence over continuation context.** If a continuation references state that doesn't match current SESH.md, follow SESH.md.
 
 ## SESH.md accumulation
 
-Each playbook owns its section and only writes to it. This prevents overwrites as the document travels the skill chain.
+Each skill owns its section and only writes to it. This prevents overwrites as the document travels the skill chain.
 
-| Playbook | Section | What it writes |
+| Skill | Section | What it writes |
 |-------|---------|----------------|
 | /discover | `## Problem` | Validated problem statement — who has it, what they do today, why it hurts |
 | /plan | `## Direction` | Top risks, pre-decided responses, guardrails, recommended approach |
@@ -222,7 +222,7 @@ default_branch: "main"
 staging_branch: "staging"
 ```
 
-Playbooks that need infrastructure config (/define, /design, /build, /launch) read from this file. Playbooks that run before /setup (/discover, /plan) don't need it.
+Skills that need infrastructure config (/define, /design, /build, /launch) read from this file. Skills that run before /setup (/discover, /plan) don't need it.
 
 Project-level deployment config lives at `deploy.json` in the project root. Also created by /setup.
 
@@ -244,11 +244,11 @@ Project-level deployment config lives at `deploy.json` in the project root. Also
 
 ## Composition
 
-Playbooks can use other playbooks' thinking internally without exposing separate commands:
+Skills can use other skills' thinking internally without exposing separate commands:
 
 - /plan runs premortem, inversion, bottleneck analysis, and optionality mapping as part of its process. These are thinking tools embedded in /plan, not standalone commands.
-- /playbooks reads SESH.md and routes to the appropriate playbook. It's a router, not a worker — it doesn't modify project state.
-- /wrap reads the current playbook's spec to list available modes in the continuation prompt.
+- /playbooks reads SESH.md and routes to the appropriate skill. It's a router, not a worker — it doesn't modify project state.
+- /wrap reads the current skill's spec to list available modes in the continuation prompt.
 
 ## The front door: /playbooks
 
@@ -256,7 +256,7 @@ The one command the business owner needs to remember.
 
 **No SESH.md found:** "Looks like a new project. Let's start by finding the real problem." Routes to /discover.
 
-**SESH.md exists:** Reads current state, determines skill chain stage, tells user where they are, suggests next playbook.
+**SESH.md exists:** Reads current state, determines skill chain stage, tells user where they are, suggests next skill.
 
 **After /wrap:** Reads continuation state, offers to resume where they left off.
 
@@ -301,18 +301,17 @@ Before showing anyone a playbook, verify these four conditions. If any are missi
 
 Then follow through — give harder, more interesting work. Not more admin. If the team sees the playbook handling the boring stuff and their job getting better, adoption is permanent. If they see the playbook as one more thing to learn with no payoff, it dies in a week.
 
-## Playbook file structure
+## Skill file structure
 
-Every playbook follows the same file structure (see [PLAYBOOK-BLUEPRINT.md](PLAYBOOK-BLUEPRINT.md) for full spec):
+Every skill follows the same file structure (see [PLAYBOOK-BLUEPRINT.md](PLAYBOOK-BLUEPRINT.md) for full spec):
 
 ```
-playbooks/{playbook-name}/
+playbooks/{skill-name}/
   SKILL.md              ← Frontmatter + skill registration
-  CLAUDE.md             ← Operating contract (the playbook's rules)
+  CLAUDE.md             ← Operating contract (the skill's rules)
   USAGE.md              ← How to invoke, modes, examples
-  SPEC_CHANGELOG.md     ← Version history of the playbook spec
+  SPEC_CHANGELOG.md     ← Version history of the skill spec
   SPEC_DECISIONS.md     ← Why the rules exist
-  playbooks/            ← Optional. Reusable patterns.
 ```
 
 ## Security
@@ -321,4 +320,4 @@ See [SECURITY.md](SECURITY.md) for how secrets, auth, and data privacy are handl
 
 ## Skill file format
 
-See [SKILL-FORMAT.md](SKILL-FORMAT.md) for the YAML frontmatter spec that registers playbooks as slash commands.
+See [SKILL-FORMAT.md](SKILL-FORMAT.md) for the YAML frontmatter spec that registers skills as slash commands.

@@ -7,7 +7,7 @@
 
 ## WD-002: Continuation prompt points to a playbook, not just "resume"
 **Date:** 2026-04-06
-**Decision:** The continuation prompt explicitly names the target playbook and mode, rather than saying "resume where you left off."
+**Decision:** The continuation prompt explicitly names the target skill and mode, rather than saying "resume where you left off."
 **Why:** The next session is a blank slate. It doesn't know what "resume" means. By naming the playbook, the mode, and the exact stopping point, the continuation prompt gives the new session everything it needs to start working in under 30 seconds. It also handles backward movement — /test wrapping to /build FIX — which a generic "resume" prompt can't express.
 
 ## WD-003: Plan-mode continuation over copy-paste prompts
@@ -18,4 +18,4 @@
 ## WD-004: /wrap never sets Status: DONE
 **Date:** 2026-04-06
 **Decision:** /wrap always writes `Status: CONTINUING`, never `Status: DONE`.
-**Why:** DONE means the playbook's work is complete and the pipeline should advance. That's the active playbook's call, not /wrap's. /wrap is a pause button, not a finish button. If the playbook's work was truly done, it would have set DONE itself before /wrap was ever needed.
+**Why:** DONE means the skill's work is complete and the pipeline should advance. That's the active skill's call, not /wrap's. /wrap is a pause button, not a finish button. If the skill's work was truly done, it would have set DONE itself before /wrap was ever needed.

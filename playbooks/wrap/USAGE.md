@@ -31,7 +31,7 @@ Manual pause. You decide when to stop.
 /wrap
 ```
 
-The playbook will:
+The skill will:
 1. Inventory what you did this session
 2. Update SESH.md with your progress
 3. Update STATUS.md in plain English
@@ -39,7 +39,7 @@ The playbook will:
 
 ### AUTO
 
-Triggered automatically when context is running low. You don't invoke this directly — the active playbook triggers it when it detects context filling up.
+Triggered automatically when context is running low. You don't invoke this directly — the active skill triggers it when it detects context filling up.
 
 Same behavior as WRAP, but opens with "Context is getting full. Saving our progress now." and skips waiting for your input.
 
@@ -80,13 +80,13 @@ Copy everything below the "CONTINUATION PROMPT" line and paste it into your next
 
 ## How it works with the pipeline
 
-/wrap works with ANY playbook. It reads which playbook is active from SESH.md, looks up that playbook's modes, and generates the right continuation prompt.
+/wrap works with ANY playbook. It reads which skill is active from SESH.md, looks up that playbook's modes, and generates the right continuation prompt.
 
-The continuation prompt can point to a different playbook than the one you were using:
+The continuation prompt can point to a different skill than the one you were using:
 
 - **/test found bugs?** Continuation points to `/build FIX`
 - **/build fixed the bugs?** Continuation points to `/test VERIFY`
-- **Playbook's work is done?** Continuation points to the next playbook in the pipeline
+- **Playbook's work is done?** Continuation points to the next skill in the pipeline
 
 ## What goes where
 

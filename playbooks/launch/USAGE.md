@@ -6,7 +6,7 @@
 ~/.claude/skills/apb/playbooks/launch/
 ```
 
-Do not copy playbook files into your project. The playbook reads your project directory — it lives in the skill pack.
+Do not copy skill files into your project. The skill reads your project directory — it lives in the skill pack.
 
 ## How to start
 
@@ -24,7 +24,7 @@ or
 /launch ship
 ```
 
-The playbook runs preflight automatically, then walks you through deployment. You'll be asked to confirm before anything goes live.
+The skill runs preflight automatically, then walks you through deployment. You'll be asked to confirm before anything goes live.
 
 ### PREFLIGHT mode
 

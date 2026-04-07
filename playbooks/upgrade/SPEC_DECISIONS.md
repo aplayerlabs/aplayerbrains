@@ -3,7 +3,7 @@
 ## UD-001: All-or-nothing upgrades
 **Date:** 2026-04-06
 **Decision:** /upgrade pulls all playbooks at once. No selective per-playbook upgrades.
-**Why:** Playbooks depend on shared contracts (SESH.md format, STATUS.md format, progress signaling). Upgrading one playbook but not others risks version mismatches where playbook A writes a field that playbook B doesn't know how to read. All-or-nothing keeps the system coherent.
+**Why:** Playbooks depend on shared contracts (SESH.md format, STATUS.md format, progress signaling). Upgrading one skill but not others risks version mismatches where playbook A writes a field that playbook B doesn't know how to read. All-or-nothing keeps the system coherent.
 
 ## UD-002: Default to cancel on local modifications
 **Date:** 2026-04-06

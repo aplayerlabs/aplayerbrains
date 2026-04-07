@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Terminology lint — catches banned terms before they ship.
+# Run manually, as a pre-commit hook, or in CI.
+#
+# Usage:
+#   ./lint-terminology          # check all files
+#   ./lint-terminology --fix    # show what to fix (no auto-fix — too risky)
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -P)"
+cd "$SCRIPT_DIR"
+
+ERRORS=0
+
+# Banned patterns and their corrections
+# Format: "pattern|correction|context"
+BANNED=(
+  "A Player Playbooks|Playbooks|product name"
+  "playbook chain|skill chain|sequence of skills"
+  "Playbook Chain|Skill Chain|sequence of skills"
+  "PLAYBOOK CHAIN|SKILL CHAIN|sequence of skills"
+  '\bbrain\b|playbook or skill|old terminology'
+  '\bBrain\b|Playbook or Skill|old terminology'
+  '\bbrains\b|playbooks or skills|old terminology'
+  '\bBrains\b|Playbooks or Skills|old terminology'
+  "doc skeleton|playfield|project structure"
+  "project skeleton|playfield|project structure"
+  "project-template|playfield-template|template folder"
+)
+
+# Files to check (exclude .git, node_modules, simulation, lint script, glossary)
+FILES=$(find . -type f \( -name '*.md' -o -name 'setup' \) \
+  | grep -v '.git/' \
+  | grep -v 'node_modules/' \
+  | grep -v 'simulation/' \
+  | grep -v 'GLOSSARY.md' \
+  | grep -v 'lint-terminology' \
+  | sort)
+
+echo ""
+echo "  Terminology Lint"
+echo "  ================"
+echo ""
+
+for entry in "${BANNED[@]}"; do
+  IFS='|' read -r pattern correction context <<< "$entry"
+
+  # Use grep with perl regex for word boundaries
+  MATCHES=$(echo "$FILES" | xargs grep -Pn "$pattern" 2>/dev/null || true)
+
+  if [ -n "$MATCHES" ]; then
+    echo "  FAIL: \"$pattern\" → should be \"$correction\" ($context)"
+    echo "$MATCHES" | while IFS= read -r line; do
+      echo "        $line"
+    done
+    echo ""
+    ERRORS=$((ERRORS + 1))
+  fi
+done
+
+echo "  ---"
+if [ "$ERRORS" -gt 0 ]; then
+  echo "  $ERRORS banned term(s) found."
+  echo "  See GLOSSARY.md for correct terminology."
+  echo ""
+  exit 1
+else
+  echo "  All clear. No banned terms found."
+  echo ""
+  exit 0
+fi

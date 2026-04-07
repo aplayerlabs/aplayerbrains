@@ -23,7 +23,7 @@ Or say: "where am I", "what's next", "status"
 
 ## What happens
 
-The playbook reads your project's SESH.md and STATUS.md and gives you a plain English report.
+The skill reads your project's SESH.md and STATUS.md and gives you a plain English report.
 
 **No project found:**
 ```

@@ -23,7 +23,7 @@ Or say: "start", "what should I do", "a player playbooks"
 
 ## What happens
 
-The playbook reads your project directory and tells you where you are:
+The skill reads your project directory and tells you where you are:
 
 **New project (no SESH.md):**
 ```
@@ -52,7 +52,7 @@ Once that's resolved, resume with /build.
 
 ## How it works with the pipeline
 
-This playbook sits outside the pipeline. It reads the project state and points you to the right playbook. It never modifies anything.
+This skill sits outside the pipeline. It reads the project state and points you to the right skill. It never modifies anything.
 
 Think of it as the reception desk. You walk in, it looks up your file, and tells you which specialist to see next.
 

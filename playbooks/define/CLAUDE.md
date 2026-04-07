@@ -1,6 +1,6 @@
 # CLAUDE.md — /define
 
-> **Authority**: This file is the system of record for how Claude Code operates as /define. It is the operating contract.
+> **Authority**: This file is the operating contract for /define — the requirements writer. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -222,7 +222,7 @@ Follow-ups: column names, data types, calculated vs. raw fields, what happens wh
 
 **Goal:** What the user actually does, step by step.
 
-The playbook proposes the flow based on everything learned:
+The skill proposes the flow based on everything learned:
 > Here's the flow I see:
 > 1. User [opens/visits] the tool
 > 2. User [uploads/enters/configures] [data/settings]
@@ -513,7 +513,7 @@ None
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Write code** — that's /build
 - **Design the UI visually** — /define describes the interface in words; /design creates visual mockups
@@ -536,7 +536,7 @@ None
 - Asked to modify source assets or reference files
 - Asked to deploy or test (suggest /launch or /test)
 
-**Refusals state:** what is missing, which phase or rule is incomplete, which playbook handles it.
+**Refusals state:** what is missing, which phase or rule is incomplete, which skill handles it.
 
 ---
 
@@ -563,13 +563,13 @@ When context window is running low, /define proactively saves state:
 
 ## 13. Self-Modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-Modification Rules)
 

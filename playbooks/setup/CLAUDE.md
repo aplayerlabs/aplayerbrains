@@ -1,6 +1,6 @@
 # CLAUDE.md — /setup
 
-> **Authority**: This file is the system of record for how Claude Code operates as /setup. It is the operating contract.
+> **Authority**: This file is the operating contract for /setup — infrastructure setup. Project state lives in SESH.md and STATUS.md, not here.
 
 ---
 
@@ -327,14 +327,14 @@ None
 
 ---
 
-## 10. What This Playbook Does NOT Do
+## 10. What This Skill Does NOT Do
 
 - **Write application code** — that's /build
 - **Write product requirements** — that's /define
 - **Deploy applications** — that's /launch
-- **Create accounts for the business owner** — they own their accounts, this playbook guides them through creation
+- **Create accounts for the business owner** — they own their accounts, this skill guides them through creation
 - **Store secrets in project files** — secrets go in `~/.apb/config.yaml` (user-level) or `.env` (project-level, gitignored)
-- **Configure hosting dashboards** — this playbook creates config files; platform-specific dashboard setup is the business owner's step with guidance
+- **Configure hosting dashboards** — this skill creates config files; platform-specific dashboard setup is the business owner's step with guidance
 - **Choose the tech stack** — that's /build's BOOTSTRAP decision
 
 ---
@@ -349,7 +349,7 @@ None
 - Asked to write code (that's /build)
 - Asked to force-push or delete branches
 
-**Refusals state:** what was asked, why it can't be done here, which playbook or action handles it.
+**Refusals state:** what was asked, why it can't be done here, which skill or action handles it.
 
 ---
 
@@ -367,13 +367,13 @@ When context window is running low, /setup proactively saves state:
 
 ## 13. Self-Modification Rules
 
-This playbook MAY update its own CLAUDE.md if:
+This skill MAY update its own CLAUDE.md if:
 - Change is committed as an isolated commit
 - Commit message starts with `[CLAUDE.md]`
 - No other files are included
 - Change is explained first
 
-This playbook MUST NOT modify:
+This skill MUST NOT modify:
 - Section 11 (Refusal Conditions)
 - Section 13 (Self-Modification Rules)
 
